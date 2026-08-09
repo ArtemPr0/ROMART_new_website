@@ -41,21 +41,42 @@
     });
   });
 
-  /* Audience accordion panels */
-  qsa("[data-audience-trigger]").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
-      var id = btn.getAttribute("data-audience-trigger");
-      var panel = qs('[data-audience-panel="' + id + '"]');
-      if (!panel) return;
-      e.preventDefault();
-      var wasOpen = panel.classList.contains("is-open");
-      qsa("[data-audience-panel]").forEach(function (p) {
-        p.classList.remove("is-open");
-      });
-      if (!wasOpen) {
-        panel.classList.add("is-open");
-        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
+  /* Detail popups (audience + services) */
+  var modal = qs("[data-modal]");
+
+  function closeDetailModals() {
+    qsa("[data-detail-modal]").forEach(function (el) {
+      el.classList.remove("is-open");
+    });
+    if (!qs("[data-modal].is-open") && !(drawer && drawer.classList.contains("is-open"))) {
+      document.body.classList.remove("nav-open");
+    }
+  }
+
+  function openDetailModal(id) {
+    var panel = qs('[data-detail-modal="' + id + '"]');
+    if (!panel) return;
+    closeDetailModals();
+    if (modal) modal.classList.remove("is-open");
+    panel.classList.add("is-open");
+    document.body.classList.add("nav-open");
+    var closeBtn = qs("[data-detail-close]", panel);
+    if (closeBtn) closeBtn.focus();
+  }
+
+  qsa("[data-detail-open]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      openDetailModal(btn.getAttribute("data-detail-open"));
+    });
+  });
+
+  qsa("[data-detail-close]").forEach(function (btn) {
+    btn.addEventListener("click", closeDetailModals);
+  });
+
+  qsa("[data-detail-modal]").forEach(function (panel) {
+    panel.addEventListener("click", function (e) {
+      if (e.target === panel) closeDetailModals();
     });
   });
 
@@ -96,10 +117,10 @@
     });
   });
 
-  /* Modal */
-  var modal = qs("[data-modal]");
+  /* Lead-gen modal */
   function openModal() {
     if (!modal) return;
+    closeDetailModals();
     modal.classList.add("is-open");
     document.body.classList.add("nav-open");
     var first = qs("input", modal);
@@ -108,7 +129,9 @@
   function closeModal() {
     if (!modal) return;
     modal.classList.remove("is-open");
-    document.body.classList.remove("nav-open");
+    if (!qs("[data-detail-modal].is-open") && !(drawer && drawer.classList.contains("is-open"))) {
+      document.body.classList.remove("nav-open");
+    }
   }
   qsa("[data-open-modal]").forEach(function (btn) {
     btn.addEventListener("click", function (e) {
@@ -123,10 +146,13 @@
     modal.addEventListener("click", function (e) {
       if (e.target === modal) closeModal();
     });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeModal();
-    });
   }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeModal();
+      closeDetailModals();
+    }
+  });
 
   /* Forms → mailto stub */
   function handleForm(form) {
