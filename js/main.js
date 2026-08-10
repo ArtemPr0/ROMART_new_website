@@ -80,7 +80,7 @@
     });
   });
 
-  /* Horizontal sliders */
+  /* Horizontal sliders (legacy tracks) */
   qsa("[data-slider]").forEach(function (slider) {
     var track = qs("[data-slider-track]", slider);
     var prev = qs("[data-slider-prev]", slider);
@@ -99,6 +99,49 @@
         track.scrollBy({ left: step(), behavior: "smooth" });
       });
     }
+  });
+
+  /* Paginated sections (clients / cases / reviews / diplomas) */
+  qsa("[data-pages]").forEach(function (root) {
+    var pages = qsa("[data-pages-page]", root);
+    if (!pages.length) return;
+    var barsHost = qs("[data-pages-bars]", root);
+    var index = Math.max(
+      0,
+      pages.findIndex(function (p) {
+        return p.classList.contains("is-active");
+      })
+    );
+    if (index < 0) index = 0;
+
+    function renderBars() {
+      if (!barsHost) return;
+      barsHost.innerHTML = "";
+      pages.forEach(function (_, i) {
+        var bar = document.createElement("button");
+        bar.type = "button";
+        bar.className = "pages-bar" + (i === index ? " is-active" : "");
+        bar.setAttribute("aria-label", "Страница " + (i + 1));
+        bar.addEventListener("click", function () {
+          go(i);
+        });
+        barsHost.appendChild(bar);
+      });
+    }
+
+    function go(nextIndex) {
+      index = (nextIndex + pages.length) % pages.length;
+      pages.forEach(function (page, i) {
+        page.classList.toggle("is-active", i === index);
+      });
+      renderBars();
+    }
+
+    var prev = qs("[data-pages-prev]", root);
+    var next = qs("[data-pages-next]", root);
+    if (prev) prev.addEventListener("click", function () { go(index - 1); });
+    if (next) next.addEventListener("click", function () { go(index + 1); });
+    go(index);
   });
 
   /* Contacts tabs */
