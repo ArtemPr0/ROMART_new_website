@@ -232,11 +232,11 @@ textarea {
   width: min(100% - 40px, var(--content));
   margin-inline: auto;
   min-height: 720px;
-  padding: 120px 0 70px;
+  padding: 148px 0 80px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 28px;
+  justify-content: flex-start;
+  gap: 0;
 }
 
 .hero__logo {
@@ -260,28 +260,29 @@ textarea {
   margin: 0;
   max-width: 672px;
   font-size: clamp(36px, 5vw, 56px);
-  line-height: 64px;
+  line-height: 1.05;
   text-transform: uppercase;
   font-weight: 700;
 }
 
 .hero__lead {
-  margin: 0;
+  margin: 28px 0 0;
   max-width: 492px;
   font-size: clamp(22px, 3vw, 32px);
-  line-height: 35px;
+  line-height: 1.15;
   font-weight: 400;
 }
 
 .hero__years {
-  margin: 0;
+  margin: 36px 0 0;
   font-size: 32px;
-  line-height: 35px;
+  line-height: 1.15;
   font-weight: 700;
 }
 
 .hero .btn {
   width: 250px;
+  margin-top: 32px;
 }
 
 /* Trust */
@@ -1675,7 +1676,7 @@ body.nav-open {
     min-height: 100svh;
     padding: 76px 0 24px;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 0;
     width: min(42vw, 168px);
     margin-left: 16px;
     margin-right: auto;
@@ -1689,6 +1690,7 @@ body.nav-open {
   }
 
   .hero__lead {
+    margin-top: 10px;
     font-size: clamp(11px, 3vw, 13px);
     line-height: 1.25;
     max-width: 100%;
@@ -1696,6 +1698,7 @@ body.nav-open {
   }
 
   .hero__years {
+    margin-top: 12px;
     font-size: 14px;
     line-height: 1.2;
     text-shadow: 0 2px 12px rgba(46, 54, 62, 0.45);
@@ -1703,7 +1706,7 @@ body.nav-open {
 
   .hero .btn {
     width: min(156px, 100%);
-    margin-top: 2px;
+    margin-top: 14px;
     min-height: 40px;
     padding: 10px 12px;
     font-size: 11px;
