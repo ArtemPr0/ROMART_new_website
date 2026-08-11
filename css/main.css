@@ -489,8 +489,15 @@ textarea {
 /* Services */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 13px;
+  container-type: inline-size;
+}
+
+.service-card--span {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+  height: calc((100cqw - 3 * 13px) / 4);
 }
 
 .service-card {
@@ -1845,7 +1852,11 @@ body.nav-open {
 
   .audience-grid,
   .services-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-card--span {
+    height: calc((100cqw - 13px) / 2);
   }
 
   .logo-pages__page,
@@ -1969,8 +1980,12 @@ body.nav-open {
   .audience-grid,
   .services-grid,
   .thanks-page {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .service-card--span {
+    height: calc((100cqw - 10px) / 2);
   }
 
   .cases-section {
