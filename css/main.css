@@ -1976,9 +1976,9 @@ body.nav-open {
   }
 
   .service-card__num {
-    font-size: 56px;
-    bottom: 10px;
-    right: 8px;
+    font-size: 52px;
+    bottom: 16px;
+    right: 12px;
     line-height: 1;
     transform: none;
   }
