@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var CONTACT_EMAIL = "info@romart.info";
+  var CONTACT_EMAIL = "zotova@romart.ru";
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -157,8 +157,54 @@
           panel.getAttribute("data-contacts-panel") === name
         );
       });
+      qsa("[data-contacts-map]").forEach(function (map) {
+        map.classList.toggle(
+          "is-active",
+          map.getAttribute("data-contacts-map") === name
+        );
+      });
     });
   });
+
+  /* Map lightbox */
+  var mapOverlay = qs("[data-map-overlay]");
+  var mapFull = qs("[data-map-full]");
+
+  function closeMapLightbox() {
+    if (!mapOverlay) return;
+    mapOverlay.classList.remove("is-open");
+    mapOverlay.setAttribute("hidden", "");
+    if (!qs("[data-detail-modal].is-open") && !(modal && modal.classList.contains("is-open")) && !(drawer && drawer.classList.contains("is-open"))) {
+      document.body.classList.remove("nav-open");
+    }
+  }
+
+  function openMapLightbox(src, alt) {
+    if (!mapOverlay || !mapFull || !src) return;
+    mapFull.src = src;
+    mapFull.alt = alt || "Схема проезда";
+    mapOverlay.removeAttribute("hidden");
+    mapOverlay.classList.add("is-open");
+    document.body.classList.add("nav-open");
+  }
+
+  qsa("[data-map-lightbox]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var img = qs("img", btn);
+      if (!img) return;
+      openMapLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    });
+  });
+
+  qsa("[data-map-close]").forEach(function (btn) {
+    btn.addEventListener("click", closeMapLightbox);
+  });
+
+  if (mapOverlay) {
+    mapOverlay.addEventListener("click", function (e) {
+      if (e.target === mapOverlay) closeMapLightbox();
+    });
+  }
 
   /* Lead-gen modal */
   function openModal() {
@@ -194,6 +240,7 @@
     if (e.key === "Escape") {
       closeModal();
       closeDetailModals();
+      closeMapLightbox();
     }
   });
 
