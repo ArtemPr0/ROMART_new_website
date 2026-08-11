@@ -1251,6 +1251,7 @@ textarea {
 .contacts-info__text {
   font-size: 15px;
   line-height: 1.45;
+  font-weight: 700;
 }
 
 .contacts-info__text strong {
@@ -1260,6 +1261,7 @@ textarea {
 .contacts-info__sub {
   display: inline-block;
   margin-top: 4px;
+  font-weight: 400;
   color: var(--half-dark);
 }
 
