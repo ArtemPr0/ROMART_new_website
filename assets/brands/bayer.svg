@@ -1,9 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bayer">
-  <circle cx="100" cy="100" r="94" fill="none" stroke="#00a0de" stroke-width="8"/>
-  <g fill="#1a3a5c" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="28" text-anchor="middle">
-    <text x="100" y="48">BAYER</text>
-    <text x="100" y="172">BAYER</text>
-    <text x="100" y="112" transform="rotate(-90 100 100)">BAYER</text>
-    <text x="100" y="112" transform="rotate(90 100 100)">BAYER</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Bayer">
+  <defs>
+    <linearGradient id="bayer-ring" x1="18%" y1="0%" x2="82%" y2="100%">
+      <stop offset="0%" stop-color="#9FD44A"/>
+      <stop offset="100%" stop-color="#2EB5E8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="120" r="108" fill="#fff" stroke="url(#bayer-ring)" stroke-width="8"/>
+  <g fill="#163A5F" font-family="Arial Narrow, Arial, Helvetica, sans-serif" font-weight="800" font-size="38" text-anchor="middle" dominant-baseline="central">
+    <text x="120" y="42">B</text>
+    <text x="120" y="81">A</text>
+    <text x="42" y="120">B</text>
+    <text x="81" y="120">A</text>
+    <text x="120" y="120">Y</text>
+    <text x="159" y="120">E</text>
+    <text x="198" y="120">R</text>
+    <text x="120" y="159">E</text>
+    <text x="120" y="198">R</text>
   </g>
 </svg>
