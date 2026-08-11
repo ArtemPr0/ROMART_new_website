@@ -2004,25 +2004,39 @@ body.nav-open {
 
   .audience-card__body,
   .service-card__body {
-    justify-content: flex-start;
+    display: block;
     padding: 12px 10px 14px;
-    gap: 6px;
+    gap: 0;
+  }
+
+  .audience-card__title,
+  .service-card__title {
+    display: block;
+    margin: 0;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
   }
 
   .audience-card__title {
-    font-size: 12px;
-    line-height: 1.25;
-    min-height: 3.75em;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+    font-size: 11px;
+    line-height: 14px;
   }
 
   .audience-card__more,
   .service-card__more {
-    margin-top: 0;
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    margin: 0;
     font-size: 12px;
+    line-height: 1.2;
     color: var(--white);
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
     text-underline-offset: 2px;
+  }
+
+  /* 12px padding + 3 title lines (14px) + 4px gap */
+  .audience-card__more {
+    top: 58px;
   }
 
   .service-card::after {
@@ -2031,9 +2045,12 @@ body.nav-open {
 
   .service-card__title {
     font-size: 12px;
-    line-height: 1.25;
-    min-height: 2.5em;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+    line-height: 15px;
+  }
+
+  /* 12px padding + 2 title lines (15px) + 4px gap */
+  .service-card__more {
+    top: 46px;
   }
 
   .service-card__num {
