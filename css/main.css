@@ -552,16 +552,17 @@ textarea {
 
 .service-card__num {
   position: absolute;
-  right: 10px;
-  bottom: -8px;
+  right: 8px;
+  bottom: 0;
   margin: 0;
+  padding: 0;
   align-self: auto;
   transform: none;
-  font-size: clamp(92px, 10.5vw, 136px);
-  line-height: 0.82;
+  font-size: clamp(88px, 10vw, 128px);
+  line-height: 1;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: rgba(255, 255, 255, 0.52);
+  color: rgba(255, 255, 255, 0.5);
   pointer-events: none;
   user-select: none;
 }
@@ -1975,9 +1976,10 @@ body.nav-open {
   }
 
   .service-card__num {
-    font-size: 64px;
-    bottom: -6px;
+    font-size: 56px;
+    bottom: 0;
     right: 6px;
+    line-height: 1;
     transform: none;
   }
 
