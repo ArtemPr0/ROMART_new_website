@@ -552,8 +552,8 @@ textarea {
 
 .service-card__num {
   position: absolute;
-  right: 8px;
-  bottom: 0;
+  right: 12px;
+  bottom: 14px;
   margin: 0;
   padding: 0;
   align-self: auto;
@@ -1977,8 +1977,8 @@ body.nav-open {
 
   .service-card__num {
     font-size: 56px;
-    bottom: 0;
-    right: 6px;
+    bottom: 10px;
+    right: 8px;
     line-height: 1;
     transform: none;
   }
