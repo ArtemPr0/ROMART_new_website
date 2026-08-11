@@ -2145,7 +2145,7 @@ body.nav-open {
     min-height: 0;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .contacts-map {
@@ -2155,7 +2155,13 @@ body.nav-open {
     min-width: 0;
     min-height: 0;
     height: auto;
+    padding: 10px 12px;
     overflow: hidden;
+    background: var(--white);
+  }
+
+  .contacts-map[data-contacts-map="lc"] {
+    padding: 14px 18px;
   }
 
   .contacts-map.is-active {
@@ -2166,6 +2172,7 @@ body.nav-open {
     width: 100%;
     max-width: 100%;
     height: auto;
+    min-width: 0;
     min-height: 0;
     object-fit: contain;
     object-position: center;
@@ -2173,17 +2180,24 @@ body.nav-open {
   }
 
   .map-lightbox {
-    padding: 12px;
+    padding: 16px 8px;
     align-items: center;
     justify-items: center;
     overflow: auto;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .map-lightbox__img {
-    max-width: calc(100vw - 24px);
+    max-width: calc(100vw - 16px);
     max-height: 85vh;
     width: auto;
     height: auto;
+    min-width: 0;
+    min-height: 0;
+    justify-self: center;
+    object-fit: contain;
+    padding: 10px 16px;
+    box-sizing: border-box;
   }
 
   .btn--cta-blue {
