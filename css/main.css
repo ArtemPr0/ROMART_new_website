@@ -552,13 +552,13 @@ textarea {
 
 .service-card__num {
   position: absolute;
-  right: 12px;
-  bottom: 14px;
+  right: 16px;
+  bottom: 22px;
   margin: 0;
   padding: 0;
   align-self: auto;
   transform: none;
-  font-size: clamp(88px, 10vw, 128px);
+  font-size: clamp(84px, 9.5vw, 120px);
   line-height: 1;
   font-weight: 600;
   letter-spacing: -0.03em;
