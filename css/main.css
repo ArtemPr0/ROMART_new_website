@@ -1998,25 +1998,42 @@ body.nav-open {
     min-height: 240px;
   }
 
-  .audience-card__body {
-    padding: 16px 12px;
-    gap: 8px;
+  .audience-card__overlay {
+    background: linear-gradient(180deg, rgba(15, 22, 30, 0.78) 0%, rgba(15, 22, 30, 0.28) 48%, rgba(15, 22, 30, 0.12) 100%);
+  }
+
+  .audience-card__body,
+  .service-card__body {
+    justify-content: flex-start;
+    padding: 12px 10px 14px;
+    gap: 6px;
   }
 
   .audience-card__title {
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.25;
+    min-height: 3.75em;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
   }
 
-  .audience-card__more {
+  .audience-card__more,
+  .service-card__more {
+    margin-top: 0;
     font-size: 12px;
+    color: var(--white);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+    text-underline-offset: 2px;
+  }
+
+  .service-card::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(0, 0, 0, 0.28) 100%);
   }
 
   .service-card__title {
-    font-size: 14px;
-  }
-
-  .service-card__more {
     font-size: 12px;
+    line-height: 1.25;
+    min-height: 2.5em;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
   }
 
   .service-card__num {
