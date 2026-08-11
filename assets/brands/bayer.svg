@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bayer">
+  <circle cx="100" cy="100" r="94" fill="none" stroke="#00a0de" stroke-width="8"/>
+  <g fill="#1a3a5c" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="28" text-anchor="middle">
+    <text x="100" y="48">BAYER</text>
+    <text x="100" y="172">BAYER</text>
+    <text x="100" y="112" transform="rotate(-90 100 100)">BAYER</text>
+    <text x="100" y="112" transform="rotate(90 100 100)">BAYER</text>
+  </g>
+</svg>

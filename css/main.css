@@ -1944,11 +1944,35 @@ body.nav-open {
 
   .audience-grid,
   .services-grid,
-  .logo-pages__page,
-  .cases-row,
   .thanks-page {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+  }
+
+  .cases-section {
+    overflow-x: hidden;
+  }
+
+  .logo-pages,
+  .cases-row {
+    min-width: 0;
+  }
+
+  .logo-pages__page,
+  .cases-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .client-logo {
+    height: 72px;
+    min-width: 0;
+    padding: 8px 12px;
+  }
+
+  .client-logo img {
+    max-width: 100%;
+    max-height: 44px;
   }
 
   .audience-card {
@@ -2007,19 +2031,26 @@ body.nav-open {
   }
 
   .case-card {
-    min-height: 340px;
-    gap: 16px;
-    padding: 24px 14px 20px;
+    min-width: 0;
+    min-height: 0;
+    gap: 14px;
+    padding: 20px 10px 16px;
+  }
+
+  .case-card__logo {
+    max-width: 100%;
+    max-height: 40px;
   }
 
   .case-card__label {
-    font-size: 12px;
+    font-size: 11px;
     max-width: none;
   }
 
   .case-card__num,
   .case-card__stat {
-    font-size: 22px;
+    font-size: 18px;
+    overflow-wrap: anywhere;
   }
 
   .review-carousel,
