@@ -557,8 +557,8 @@ textarea {
   margin: 0;
   padding: 0;
   align-self: auto;
-  /* ~15% of numeral height past the card edge — matches Figma crop */
-  transform: translateY(15%);
+  /* Nudge past bottom + right edges like Figma */
+  transform: translate(6%, 20%);
   font-size: clamp(100px, 12vw, 150px);
   line-height: 0.88;
   font-weight: 600;
@@ -1981,7 +1981,7 @@ body.nav-open {
     bottom: 0;
     right: 0;
     line-height: 0.88;
-    transform: translateY(15%);
+    transform: translate(6%, 20%);
   }
 
   .logo-grid {
