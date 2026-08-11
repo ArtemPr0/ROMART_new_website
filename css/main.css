@@ -558,7 +558,7 @@ textarea {
   padding: 0;
   align-self: auto;
   /* Nudge past bottom + right edges like Figma */
-  transform: translate(6%, 28%);
+  transform: translate(-2%, 28%);
   font-size: clamp(100px, 12vw, 150px);
   line-height: 0.88;
   font-weight: 600;
@@ -1981,7 +1981,7 @@ body.nav-open {
     bottom: 0;
     right: 0;
     line-height: 0.88;
-    transform: translate(6%, 28%);
+    transform: translate(-2%, 28%);
   }
 
   .logo-grid {
