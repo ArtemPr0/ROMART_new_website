@@ -500,18 +500,8 @@ textarea {
 
 .service-card--span {
   grid-column: 1 / -1;
-  aspect-ratio: 16 / 9;
-  height: auto;
-  min-height: 0;
-}
-
-.service-card--baked .service-card__body {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.service-card--baked::after {
-  display: none;
+  aspect-ratio: auto;
+  height: calc((100cqw - 3 * 13px) / 4);
 }
 
 .service-card {
@@ -840,6 +830,12 @@ textarea {
   font-weight: 500;
   color: var(--gray-1);
   max-width: 18ch;
+}
+
+.case-card__label:has(.case-card__note) {
+  max-width: none;
+  width: 100%;
+  padding-inline: 6px;
 }
 
 .case-card__note {
@@ -1880,8 +1876,7 @@ body.nav-open {
   }
 
   .service-card--span {
-    aspect-ratio: 16 / 9;
-    height: auto;
+    height: calc((100cqw - 13px) / 2);
   }
 
   .logo-pages__page,
@@ -2010,8 +2005,7 @@ body.nav-open {
   }
 
   .service-card--span {
-    aspect-ratio: 16 / 9;
-    height: auto;
+    height: calc((100cqw - 10px) / 2);
   }
 
   .cases-section {
