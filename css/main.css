@@ -994,17 +994,27 @@ textarea {
 .cta-split {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
+  align-items: stretch;
   border-radius: var(--radius);
   overflow: hidden;
   min-height: 420px;
 }
 
+.cta-split__media {
+  position: relative;
+  min-height: 420px;
+  height: 100%;
+  overflow: hidden;
+}
+
 .cta-split__photo {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 420px;
   object-fit: cover;
   object-position: center;
+  display: block;
 }
 
 .cta-split__form {
@@ -1014,6 +1024,9 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 420px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .cta-split__lead {
@@ -2171,6 +2184,7 @@ body.nav-open {
     display: none;
   }
 
+  .cta-split__media,
   .cta-split__photo {
     min-height: 240px;
   }
