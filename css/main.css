@@ -463,10 +463,14 @@ textarea {
 }
 
 .logo-grid--retail {
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 420px;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 100%;
   margin-inline: auto;
   width: 100%;
+}
+
+.logo-grid--9 {
+  min-height: 280px;
 }
 
 .logo-grid__cell {
@@ -2087,6 +2091,14 @@ body.nav-open {
     gap: 12px;
     min-height: 0;
     padding: 10px;
+  }
+
+  .logo-grid--retail {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .logo-grid--9 {
+    min-height: 0;
   }
 
   .logo-grid__cell {
