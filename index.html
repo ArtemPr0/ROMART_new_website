@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20260813j">
+  <link rel="stylesheet" href="css/main.css?v=20260813k">
 </head>
 <body>
   <header class="site-header">
@@ -553,34 +553,350 @@
       </div>
     </section>
 
-    <section class="section section--soft" id="blagodarnosti" data-pages>
+    <section class="section section--soft" id="blagodarnosti">
       <div class="container">
         <h2 class="section-title">Дипломы и <span class="accent">благодарности</span></h2>
-        <div class="thanks-carousel">
-          <button type="button" class="pages-nav__btn" data-pages-prev aria-label="Назад">‹</button>
-          <div class="thanks-track" data-pages-track>
-            <div class="thanks-page is-active" data-pages-page>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-            </div>
-            <div class="thanks-page" data-pages-page>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-            </div>
-            <div class="thanks-page" data-pages-page>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-              <div class="thanks-item" aria-hidden="true"></div>
-            </div>
-          </div>
-          <button type="button" class="pages-nav__btn pages-nav__btn--accent" data-pages-next aria-label="Вперёд">›</button>
+        <div class="thanks-tabs" role="tablist">
+          <button type="button" class="is-active" role="tab" aria-selected="true" data-thanks-tab="business">Бизнес-партнеры</button>
+          <button type="button" role="tab" aria-selected="false" data-thanks-tab="government">Государственные и общественные организации</button>
+          <button type="button" role="tab" aria-selected="false" data-thanks-tab="medical">Медицинские учреждения</button>
         </div>
-        <div class="pages-bars" data-pages-bars></div>
+        <div class="thanks-panel is-active" data-thanks-panel="business" data-pages>
+          <div class="thanks-carousel">
+            <button type="button" class="pages-nav__btn" data-pages-prev aria-label="Назад">‹</button>
+            <div class="thanks-track" data-pages-track>
+            <div class="thanks-page is-active" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/d65be61a1701fa239e814b699f449da1.jpg?v=20260813k" alt="Отзыв Пфайзер о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/952025008b71800f0ae7e3b1ee9f8212.png?v=20260813k" alt="Отзыв Медика Пресс о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/2a1fc2b02fd3d11df6f4a8d8c015e10a.jpg?v=20260813k" alt="Диплом ROMART" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/d0e3f68d4e8e62630510e44c43128491.jpg?v=20260813k" alt="Диплом ROMART" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/25de57eb968b6b578b4f97058d1e9554.jpg?v=20260813k" alt="Отзыв Белла-Восток о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/908cb238166cc7714cdea1fa82b87631.jpeg?v=20260813k" alt="Отзыв Гиантера о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/dbc44a25c5e455405c11c4f00eff5cd6.jpg?v=20260813k" alt="Отзыв Доброе начало о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/3b148a0d12e840a31aa8b6bc197dd9fb.jpeg?v=20260813k" alt="Отзыв Валеант о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/985a002e8a39e24da2f50b772fe2b36d.jpg?v=20260813k" alt="Отзыв Код оф Трейд о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/5f51c29d4b33263650279a1d53b0e199.jpeg?v=20260813k" alt="Отзыв Сад Чудес о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/40d6f61f1b2754701f354e7ad8c5eb20.jpg?v=20260813k" alt="Отзыв Манн и Шредер о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/d3f07316c47d532131747bf4f4266d78.jpeg?v=20260813k" alt="Отзыв МОБД о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/f2f443f42c630bf350b1534fbe4b5079.jpg?v=20260813k" alt="Отзыв Мултон о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/66feae3beeab667d38a7c293aa5a51ac.png?v=20260813k" alt="Диплом ROMART" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/a42919a9a5486a2f9af8398f1b0d346e.jpeg?v=20260813k" alt="Отзыв Санфорд о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/c38eb66e6dbe0528d8d28fe6cbb6efe4.jpg?v=20260813k" alt="Отзыв Трейд-Сервис о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/b98c58edc28f1d26d3a1a93c6c48a705.jpg?v=20260813k" alt="Отзыв Юнилевер о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/52dd7441064eae0610448413e1804ef2.jpeg?v=20260813k" alt="Отзыв Юнимилк о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/1e92c38860e74cb76116c0082059f786.jpg?v=20260813k" alt="Отзыв Юнифарм о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/92205f8b2e640644186f94beab188c4e.jpg?v=20260813k" alt="Отзыв Weleda о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/business_partners/6ab56b531b4644946b71b0ad519780d8.jpg?v=20260813k" alt="Диплом ROMART" width="484" height="670">
+              </button>
+            </div>
+            </div>
+            <button type="button" class="pages-nav__btn pages-nav__btn--accent" data-pages-next aria-label="Вперёд">›</button>
+          </div>
+          <div class="pages-bars" data-pages-bars></div>
+        </div>
+        <div class="thanks-panel" data-thanks-panel="government" data-pages>
+          <div class="thanks-carousel">
+            <button type="button" class="pages-nav__btn" data-pages-prev aria-label="Назад">‹</button>
+            <div class="thanks-track" data-pages-track>
+            <div class="thanks-page is-active" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/e88aab2db9dee24998b7fefe918af284.jpeg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/cb7b105ab62df52b8c81c458342b4f0e.jpg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/080c844442d9ed4ceb9fabb3741f177e.jpg?v=20260813k" alt="Грамота РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/27f2ebaf63677f230e95e6f99cba7355.jpg?v=20260813k" alt="Благодарность РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/81d1a59ee9ed1d93503c1f877998c8f8.jpeg?v=20260813k" alt="Отзыв РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/7c409bee430f57339204adee2d498266.jpg?v=20260813k" alt="Благодарность РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/81d00b3b2bbc4e16bdcb80d0c961541c.jpg?v=20260813k" alt="Благодарность РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/2326a120edda88d5152662cd86472ad5.jpg?v=20260813k" alt="Благодарность РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/f866810923efbfe7c50fd9cbb21ad4df.jpg?v=20260813k" alt="Благодарность РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/0973df5323fc3e737afc2be09c7ee278.jpg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/d51bdba88cacbec54820191bfa1dc15b.jpeg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/54b00d544e2c6bfd346de4dbb450f268.jpg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/government_agencies/d926fbd4012ad972d7a342241a72cbec.jpg?v=20260813k" alt="Диплом РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/0ee230cea128f9fd24800223f164e627.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/f749225d6027957985de925ec56fa966.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/c69440681b449b7f090c2346da65e9e3.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/e8ee7b7bc976d51dba8e5ed5d6b94dbe.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/09b0c272ae2b7bcc82c110eb2981b414.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/c7824cb68d78395ecbcff341389b63f3.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/91757cff80bceafac96522c595d201c7.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/e6185c561c5fa091538714b90f890b0f.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/c673ebf880b4a699a3bd49c34984bd74.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/f8278720e019bcd8fe6a981ffa8addff.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/b520ae7d86cc6561aa8c7f208fe3c4cd.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/ca87a67c70ecc3b5356d40e0c2d11f45.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/af43198453cc5297d7a8bfbde243f034.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/c4d11831ca227ae5d8722ace3492d777.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/458d7998a94154002fa8518132528684.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/community_sites/17e00dc7107d8945914b96b7b1f3e34f.png?v=20260813k" alt="Отзывы пользователей о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            </div>
+            <button type="button" class="pages-nav__btn pages-nav__btn--accent" data-pages-next aria-label="Вперёд">›</button>
+          </div>
+          <div class="pages-bars" data-pages-bars></div>
+        </div>
+        <div class="thanks-panel" data-thanks-panel="medical" data-pages>
+          <div class="thanks-carousel">
+            <button type="button" class="pages-nav__btn" data-pages-prev aria-label="Назад">‹</button>
+            <div class="thanks-track" data-pages-track>
+            <div class="thanks-page is-active" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/c890a5fcae76ab46963e377a9e988304.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/e0a2a4f4ae4b445a32733ab5db6bb528.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/e3aa79ed84c9619ed6367bea3fa76ed2.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/57823cc11390a228ca1d57a0a19ce3a3.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ba1d2aa8049299bf76b9f03f6d203a93.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ec011712d9206fc0e2172b02a328e0e0.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/a5b477aa3d06626229a9e76586d27595.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/5c122bdd11628f048bd5340456bb2051.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ac9fd23b69cc7dac2705990fd8f27e1a.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/383f3bd0d31d008b574aa9e910ea7103.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/2dc878ffd81bf80e860341d48395bd8c.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/dffe52f0d5b1d56859b801829b19e54c.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/f4ba9218d3f7a871f47f873926a4caeb.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/d75b2b17e70cc8291d219746c3b7b3c3.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/96f73de41bca38baeee446cce8604d5c.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/f68829f927118aea837340241d5b71f9.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/387567a0bfae928794cdb6e03ebf31b9.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/af939f0f59d58254ea14370851fe04ae.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/af1d6d77f2c3a0a88425853d251541f2.png?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/3d06bd659b76d87b29f6675c434e6b2f.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/6a0864bb786c37405fea81f8ca499977.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/a7f17b30776653cfeb485c7ea9c3e0f9.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/70a868fd143dab56e36796396d13fe05.png?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/521d91a1679b800dd060386c3a510fd0.png?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/0844611d1462f5f5596b057ad2e48e62.png?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/c7257633e984fe23c78470e639c818e2.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ea697b5d60638b64a8a9d6be474f5ad3.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/80a11c08fa018834ecdfab92fe51186d.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/30e500041d386573d96016e66991be15.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/1025aa5a28116bf5c1efb5ef32b58a65.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ef295faa34142b8149c2cf1eecc469a9.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/63c8d599de3c63208d1f3da6355feca5.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/ed5e60b2a4b779ec9a89f00b423a19b8.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/57ef284bc7c936660d90615ebe75fd88.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/a0ca60cd7393d9980405db6280308f49.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/7c3d8100b13ff7913d8d728a46c15100.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            <div class="thanks-page" data-pages-page>
+              <button type="button" class="thanks-item" data-thanks-open>
+                <img src="assets/thanks/health_care_facility/1ae562eebcf89d2e7be96f740129090a.jpg?v=20260813k" alt="Отзывы ЛПУ о РОМАРТ" width="484" height="670">
+              </button>
+            </div>
+            </div>
+            <button type="button" class="pages-nav__btn pages-nav__btn--accent" data-pages-next aria-label="Вперёд">›</button>
+          </div>
+          <div class="pages-bars" data-pages-bars></div>
+        </div>
       </div>
     </section>
 
@@ -1008,6 +1324,11 @@
     </div>
   </div>
 
+  <div class="map-lightbox" data-thanks-overlay hidden>
+    <button type="button" class="map-lightbox__close" data-thanks-close aria-label="Закрыть">×</button>
+    <img class="map-lightbox__img" data-thanks-full alt="">
+  </div>
+
   <div class="modal" data-modal role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal__dialog">
       <button type="button" class="modal__close" data-close-modal aria-label="Закрыть">×</button>
@@ -1026,6 +1347,6 @@
   </div>
 
   <style>.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}</style>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20260813k"></script>
 </body>
 </html>

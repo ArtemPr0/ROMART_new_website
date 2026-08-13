@@ -243,8 +243,66 @@
       closeDetailModals();
       closeReviewModal();
       closeMapLightbox();
+      closeThanksLightbox();
     }
   });
+
+  /* Diplomas / thanks tabs + lightbox */
+  qsa("[data-thanks-tab]").forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      var name = tab.getAttribute("data-thanks-tab");
+      qsa("[data-thanks-tab]").forEach(function (t) {
+        var on = t === tab;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      qsa("[data-thanks-panel]").forEach(function (panel) {
+        panel.classList.toggle(
+          "is-active",
+          panel.getAttribute("data-thanks-panel") === name
+        );
+      });
+    });
+  });
+
+  var thanksOverlay = qs("[data-thanks-overlay]");
+  var thanksFull = qs("[data-thanks-full]", thanksOverlay || document);
+
+  function closeThanksLightbox() {
+    if (!thanksOverlay) return;
+    thanksOverlay.classList.remove("is-open");
+    thanksOverlay.setAttribute("hidden", "");
+    if (!qs("[data-detail-modal].is-open") && !(modal && modal.classList.contains("is-open")) && !(drawer && drawer.classList.contains("is-open")) && !(reviewModal && reviewModal.classList.contains("is-open")) && !(mapOverlay && mapOverlay.classList.contains("is-open"))) {
+      document.body.classList.remove("nav-open");
+    }
+  }
+
+  function openThanksLightbox(src, alt) {
+    if (!thanksOverlay || !thanksFull || !src) return;
+    thanksFull.src = src;
+    thanksFull.alt = alt || "";
+    thanksOverlay.removeAttribute("hidden");
+    thanksOverlay.classList.add("is-open");
+    document.body.classList.add("nav-open");
+  }
+
+  qsa("[data-thanks-open]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var img = qs("img", btn);
+      if (!img) return;
+      openThanksLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+    });
+  });
+
+  qsa("[data-thanks-close]").forEach(function (btn) {
+    btn.addEventListener("click", closeThanksLightbox);
+  });
+
+  if (thanksOverlay) {
+    thanksOverlay.addEventListener("click", function (e) {
+      if (e.target === thanksOverlay) closeThanksLightbox();
+    });
+  }
 
   /* Full review popup */
   var reviewModal = qs("[data-review-modal]");
