@@ -306,6 +306,7 @@
 
   /* Full review popup */
   var reviewModal = qs("[data-review-modal]");
+  var reviewAvatar = qs("[data-review-avatar]", reviewModal || document);
   var reviewPhoto = qs("[data-review-photo]", reviewModal || document);
   var reviewName = qs("[data-review-name]", reviewModal || document);
   var reviewRole = qs("[data-review-role]", reviewModal || document);
@@ -326,13 +327,15 @@
     var roleEl = qs(".review-featured__role", card);
     var full = qs(".review-featured__full", card);
     if (reviewPhoto) {
-      if (photo) {
-        reviewPhoto.src = photo.getAttribute("src");
+      var src = photo ? (photo.getAttribute("src") || "").trim() : "";
+      if (src) {
+        reviewPhoto.src = src;
         reviewPhoto.alt = photo.getAttribute("alt") || "";
-        reviewPhoto.hidden = false;
+        if (reviewAvatar) reviewAvatar.classList.remove("is-empty");
       } else {
         reviewPhoto.removeAttribute("src");
-        reviewPhoto.hidden = true;
+        reviewPhoto.alt = "";
+        if (reviewAvatar) reviewAvatar.classList.add("is-empty");
       }
     }
     if (reviewName) reviewName.textContent = nameEl ? nameEl.textContent : "";
