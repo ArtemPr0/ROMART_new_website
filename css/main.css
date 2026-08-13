@@ -538,7 +538,7 @@ textarea {
 
 .service-card--span img {
   object-fit: cover;
-  object-position: 50% 52%;
+  object-position: 50% 62%;
 }
 
 .service-card::after {
@@ -1742,6 +1742,14 @@ textarea {
   object-fit: cover;
   max-height: 420px;
   height: 100%;
+}
+
+.detail-modal[data-detail-modal="service-9"] .detail-modal__media {
+  height: auto;
+  max-height: 380px;
+  margin-top: 28px;
+  object-fit: cover;
+  object-position: 50% 55%;
 }
 
 .detail-modal__link {
