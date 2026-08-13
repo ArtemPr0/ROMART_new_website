@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/main.css?v=20260813o">
 </head>
 <body>
   <header class="site-header">
@@ -59,7 +59,7 @@
               <li>100% чистоты базы — оплата только за нужные параметры</li>
               <li>Прямой контакт без рекламы</li>
         </ul>
-        <button type="button" class="btn" data-open-modal>Получить консультацию</button>
+        <button type="button" class="btn" data-open-modal="lead">Получить консультацию</button>
       </div>
       <div class="service-detail__media">
         <img src="../assets/services/detail-coreg.png" width="640" height="560" alt="Корегистрация">
@@ -132,7 +132,7 @@
       <nav class="footer-nav">
         <a href="../index.html#uslugi">Услуги</a>
         <a href="../index.html#kontakty">Контакты</a>
-        <a href="#" data-open-modal>Обратная связь</a>
+        <a href="#" data-open-modal="lead">Обратная связь</a>
       </nav>
       <nav class="footer-nav">
         <a href="../polzovatelskoe-soglashenie.html">Пользовательское соглашение</a>
@@ -155,6 +155,7 @@
         <div class="form-fields">
           <label><input type="text" name="name" placeholder="Имя.:" required></label>
           <label><input type="tel" name="phone" placeholder="Тел.:" required></label>
+          <label data-modal-email hidden><span class="visually-hidden">Email</span><input type="email" name="email" placeholder="Email.:" autocomplete="email"></label>
           <button type="submit" class="btn">Отправить заявку</button>
           <p class="form-note">Нажимая кнопку, я даю <a href="../politika-konfidencialnosti.html">согласие на обработку персональных данных</a>.</p>
         </div>
@@ -162,6 +163,6 @@
       </form>
     </div>
   </div>
-  <script src="../js/main.js"></script>
+  <script src="../js/main.js?v=20260813o"></script>
 </body>
 </html>

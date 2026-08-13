@@ -142,6 +142,22 @@
     var next = qs("[data-pages-next]", root);
     if (prev) prev.addEventListener("click", function () { go(index - 1); });
     if (next) next.addEventListener("click", function () { go(index + 1); });
+
+    var touchX = 0;
+    var touchY = 0;
+    root.addEventListener("touchstart", function (e) {
+      if (!e.changedTouches.length) return;
+      touchX = e.changedTouches[0].clientX;
+      touchY = e.changedTouches[0].clientY;
+    }, { passive: true });
+    root.addEventListener("touchend", function (e) {
+      if (!e.changedTouches.length) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      var dy = e.changedTouches[0].clientY - touchY;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+      go(dx < 0 ? index + 1 : index - 1);
+    }, { passive: true });
+
     go(index);
   });
 
@@ -208,9 +224,20 @@
   }
 
   /* Lead-gen modal */
-  function openModal() {
+  function openModal(mode) {
     if (!modal) return;
     closeDetailModals();
+    var lead = mode === "lead";
+    var emailWrap = qs("[data-modal-email]", modal);
+    var emailInput = emailWrap ? qs("input", emailWrap) : null;
+    if (emailWrap) {
+      if (lead) emailWrap.removeAttribute("hidden");
+      else emailWrap.setAttribute("hidden", "");
+    }
+    if (emailInput) {
+      emailInput.required = lead;
+      if (!lead) emailInput.value = "";
+    }
     modal.classList.add("is-open");
     document.body.classList.add("nav-open");
     var first = qs("input", modal);
@@ -226,7 +253,7 @@
   qsa("[data-open-modal]").forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
-      openModal();
+      openModal(btn.getAttribute("data-open-modal") || "callback");
     });
   });
   qsa("[data-close-modal]").forEach(function (btn) {
@@ -372,8 +399,14 @@
       var name = (data.get("name") || "").toString().trim();
       var email = (data.get("email") || "").toString().trim();
       var phone = (data.get("phone") || "").toString().trim();
+      var emailInput = qs('input[name="email"]', form);
+      var needEmail = emailInput && emailInput.required;
       if (!name || !phone) {
         alert("Пожалуйста, заполните имя и телефон.");
+        return;
+      }
+      if (needEmail && !email) {
+        alert("Пожалуйста, укажите телефон и email.");
         return;
       }
       var body = ["Имя: " + name, "Телефон: " + phone];

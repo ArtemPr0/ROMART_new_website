@@ -47,6 +47,21 @@ img {
   display: block;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+[data-modal-email][hidden] {
+  display: none !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -1187,18 +1202,19 @@ textarea {
 
 .thanks-carousel {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 16px;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 20px;
   align-items: center;
 }
 
 .thanks-track {
   position: relative;
+  min-width: 0;
 }
 
 .thanks-page {
   display: none;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -1209,6 +1225,9 @@ textarea {
 .thanks-item {
   display: block;
   width: 100%;
+  max-width: 260px;
+  margin-inline: auto;
+  min-width: 0;
   aspect-ratio: 3/4;
   padding: 0;
   border-radius: 16px;
@@ -1221,6 +1240,7 @@ textarea {
 .thanks-item img {
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: contain;
   object-position: center;
 }
@@ -1996,6 +2016,16 @@ textarea {
   color: var(--gray-1);
 }
 
+.news-article__body a {
+  color: var(--teal);
+}
+
+.news-article__body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
 .news-article__back {
   display: inline-block;
   margin: 28px 0 0;
@@ -2091,7 +2121,7 @@ body.nav-open {
   .cases-row,
   .thanks-page,
   .news-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .database__content {
@@ -2386,12 +2416,30 @@ body.nav-open {
 
   .review-carousel,
   .thanks-carousel {
-    grid-template-columns: 1fr;
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 52px;
+    gap: 0;
   }
 
   .review-carousel .pages-nav__btn,
   .thanks-carousel .pages-nav__btn {
-    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: grid;
+    place-items: center;
+  }
+
+  .review-carousel [data-pages-prev],
+  .thanks-carousel [data-pages-prev] {
+    left: 0;
+  }
+
+  .review-carousel [data-pages-next],
+  .thanks-carousel [data-pages-next] {
+    right: 0;
   }
 
   .thanks-tabs {
