@@ -48,6 +48,7 @@
     qsa("[data-detail-modal]").forEach(function (el) {
       el.classList.remove("is-open");
     });
+    closeReviewModal();
     if (!qs("[data-modal].is-open") && !(drawer && drawer.classList.contains("is-open"))) {
       document.body.classList.remove("nav-open");
     }
@@ -240,9 +241,67 @@
     if (e.key === "Escape") {
       closeModal();
       closeDetailModals();
+      closeReviewModal();
       closeMapLightbox();
     }
   });
+
+  /* Full review popup */
+  var reviewModal = qs("[data-review-modal]");
+  var reviewPhoto = qs("[data-review-photo]", reviewModal || document);
+  var reviewName = qs("[data-review-name]", reviewModal || document);
+  var reviewRole = qs("[data-review-role]", reviewModal || document);
+  var reviewText = qs("[data-review-text]", reviewModal || document);
+
+  function closeReviewModal() {
+    if (!reviewModal) return;
+    reviewModal.classList.remove("is-open");
+    if (!qs("[data-detail-modal].is-open") && !(modal && modal.classList.contains("is-open")) && !(drawer && drawer.classList.contains("is-open"))) {
+      document.body.classList.remove("nav-open");
+    }
+  }
+
+  function openReviewModal(card) {
+    if (!reviewModal || !card) return;
+    var photo = qs(".review-featured__photo", card);
+    var nameEl = qs(".review-featured__name", card);
+    var roleEl = qs(".review-featured__role", card);
+    var full = qs(".review-featured__full", card);
+    if (reviewPhoto) {
+      if (photo) {
+        reviewPhoto.src = photo.getAttribute("src");
+        reviewPhoto.alt = photo.getAttribute("alt") || "";
+        reviewPhoto.hidden = false;
+      } else {
+        reviewPhoto.removeAttribute("src");
+        reviewPhoto.hidden = true;
+      }
+    }
+    if (reviewName) reviewName.textContent = nameEl ? nameEl.textContent : "";
+    if (reviewRole) reviewRole.textContent = roleEl ? roleEl.textContent : "";
+    if (reviewText) reviewText.innerHTML = full ? full.innerHTML : "";
+    closeDetailModals();
+    if (modal) modal.classList.remove("is-open");
+    reviewModal.classList.add("is-open");
+    document.body.classList.add("nav-open");
+  }
+
+  qsa("[data-review-open]").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      openReviewModal(btn.closest(".review-featured"));
+    });
+  });
+
+  qsa("[data-review-close]").forEach(function (btn) {
+    btn.addEventListener("click", closeReviewModal);
+  });
+
+  if (reviewModal) {
+    reviewModal.addEventListener("click", function (e) {
+      if (e.target === reviewModal) closeReviewModal();
+    });
+  }
 
   /* Forms → mailto stub */
   function handleForm(form) {

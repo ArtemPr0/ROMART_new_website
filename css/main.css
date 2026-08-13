@@ -536,6 +536,10 @@ textarea {
   object-fit: cover;
 }
 
+.service-card--span img {
+  object-position: 50% 16%;
+}
+
 .service-card::after {
   content: "";
   position: absolute;
@@ -977,6 +981,18 @@ textarea {
   object-fit: contain;
 }
 
+.review-featured__photo {
+  width: 88px;
+  height: 88px;
+  max-height: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review-featured__full {
+  display: none;
+}
+
 .review-featured__name {
   margin: 8px 0 0;
   font-weight: 700;
@@ -1176,6 +1192,19 @@ textarea {
   aspect-ratio: 3/4;
   border-radius: 16px;
   background: #e8eef2;
+  overflow: hidden;
+}
+
+.news-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.news-card a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .news-card__body {
@@ -1809,6 +1838,80 @@ textarea {
   aspect-ratio: 1.15;
 }
 
+.review-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 20px;
+}
+
+.review-modal__head img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.review-modal__name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.review-modal__role {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--half-dark);
+}
+
+.review-modal__text p {
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-1);
+}
+
+.news-article {
+  padding: 48px 0 80px;
+  scroll-margin-top: 96px;
+}
+
+.news-article__date {
+  margin: 0 0 12px;
+  color: var(--gray-4);
+  font-size: 14px;
+}
+
+.news-article__title {
+  margin: 0 0 24px;
+  color: var(--teal);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.25;
+}
+
+.news-article__hero {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin: 0 0 28px;
+}
+
+.news-article__body p {
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-1);
+}
+
+.news-article__back {
+  display: inline-block;
+  margin: 28px 0 0;
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .legal {
   padding: 48px 0 80px;
 }
@@ -2144,6 +2247,12 @@ body.nav-open {
 
   .logo-grid__cell img {
     max-height: 44px;
+  }
+
+  .logo-grid > .logo-grid__cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 12px) / 2);
+    justify-self: center;
   }
 
   .case-card,
