@@ -469,6 +469,14 @@ textarea {
   width: 100%;
 }
 
+.logo-grid--retail .logo-grid__cell {
+  height: 88px;
+}
+
+.logo-grid--retail .logo-grid__cell img {
+  max-height: 76px;
+}
+
 .logo-grid--9 {
   min-height: 280px;
 }
@@ -1539,13 +1547,17 @@ textarea {
   position: absolute;
   top: 12px;
   right: 14px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
   border: 0;
   background: transparent;
   font-size: 28px;
   cursor: pointer;
   color: var(--gray-1);
   line-height: 1;
-  z-index: 1;
+  z-index: 2;
 }
 
 .detail-modal__grid {
@@ -1557,6 +1569,7 @@ textarea {
 
 .detail-modal__copy h3 {
   margin: 0 0 20px;
+  padding-right: 48px;
   font-size: clamp(18px, 2.4vw, 24px);
   text-transform: uppercase;
   line-height: 1.25;
@@ -2113,6 +2126,14 @@ body.nav-open {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .logo-grid--retail .logo-grid__cell {
+    height: 72px;
+  }
+
+  .logo-grid--retail .logo-grid__cell img {
+    max-height: 64px;
+  }
+
   .logo-grid--9 {
     min-height: 0;
   }
@@ -2184,13 +2205,31 @@ body.nav-open {
   }
 
   .detail-modal__dialog {
-    padding: 28px 18px 22px;
-    max-height: min(92svh, 900px);
+    display: flex;
+    flex-direction: column;
+    padding: 52px 18px 24px;
+    max-height: min(90svh, 900px);
+    overflow: hidden;
+  }
+
+  .detail-modal__close {
+    top: 8px;
+    right: 6px;
+  }
+
+  .detail-modal__copy h3 {
+    padding-right: 40px;
   }
 
   .detail-modal__grid {
     grid-template-columns: 1fr;
     gap: 20px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: 8px;
   }
 
   .detail-modal__media {
