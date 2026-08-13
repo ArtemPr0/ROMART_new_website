@@ -376,13 +376,10 @@
         alert("Пожалуйста, заполните имя и телефон.");
         return;
       }
-      var body = [
-        "Имя: " + name,
-        "Email: " + email,
-        "Телефон: " + phone,
-        "",
-        "Заявка с сайта romart.ru",
-      ].join("\n");
+      var body = ["Имя: " + name, "Телефон: " + phone];
+      if (email) body.push("Email: " + email);
+      body.push("", "Заявка с сайта romart.ru");
+      body = body.join("\n");
       var mailto =
         "mailto:" +
         CONTACT_EMAIL +

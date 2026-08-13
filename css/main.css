@@ -538,7 +538,7 @@ textarea {
 
 .service-card--span img {
   object-fit: cover;
-  object-position: 50% 46%;
+  object-position: 50% 52%;
 }
 
 .service-card::after {
@@ -1221,8 +1221,8 @@ textarea {
 .thanks-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
+  object-position: center;
 }
 
 .thanks-item:focus-visible {
