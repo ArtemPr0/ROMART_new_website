@@ -508,8 +508,8 @@ textarea {
 
 .service-card--span {
   grid-column: 1 / -1;
-  aspect-ratio: auto;
-  height: calc((100cqw - 3 * 13px) / 4);
+  aspect-ratio: 16 / 9;
+  height: auto;
 }
 
 .service-card {
@@ -537,7 +537,8 @@ textarea {
 }
 
 .service-card--span img {
-  object-position: 50% 0;
+  object-fit: cover;
+  object-position: 50% 48%;
 }
 
 .service-card::after {
@@ -2008,7 +2009,8 @@ body.nav-open {
   }
 
   .service-card--span {
-    height: calc((100cqw - 13px) / 2);
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 
   .logo-pages__page,
@@ -2137,7 +2139,8 @@ body.nav-open {
   }
 
   .service-card--span {
-    height: calc((100cqw - 10px) / 2);
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 
   .cases-section {
