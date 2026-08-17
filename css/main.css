@@ -519,6 +519,12 @@ textarea {
   border-radius: 0;
 }
 
+.detail-modal[data-detail-modal="audience-8"] .logo-grid__cell img[alt="Hasbro"] {
+  max-height: 72px;
+  max-width: 96%;
+  transform: scale(1.15);
+}
+
 /* Services */
 .services-grid {
   display: grid;
