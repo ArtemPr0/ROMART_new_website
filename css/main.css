@@ -2384,6 +2384,11 @@ body.nav-open {
     max-height: 44px;
   }
 
+  .detail-modal[data-detail-modal="audience-8"] .logo-grid__cell img[alt="Hasbro"] {
+    max-height: 64px;
+    transform: scale(1.2);
+  }
+
   .logo-grid > .logo-grid__cell:last-child:nth-child(odd) {
     grid-column: 1 / -1;
     width: calc((100% - 12px) / 2);
