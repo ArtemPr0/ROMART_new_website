@@ -496,8 +496,15 @@ textarea {
   min-height: 280px;
 }
 
+.detail-modal[data-detail-modal="audience-1"] .logo-grid--9,
+.detail-modal[data-detail-modal="audience-3"] .logo-grid--9,
 .detail-modal[data-detail-modal="audience-7"] .logo-grid--9 {
   min-height: 0;
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+.detail-modal[data-detail-modal="audience-4"] .logo-grid--retail {
   max-height: min(70vh, 520px);
   overflow-y: auto;
 }
