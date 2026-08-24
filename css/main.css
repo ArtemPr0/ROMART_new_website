@@ -1108,6 +1108,15 @@ textarea {
   gap: 14px;
 }
 
+.form-fields {
+  display: grid;
+  gap: 16px;
+}
+
+.modal .form-fields {
+  gap: 18px;
+}
+
 .form--cta .form-fields {
   display: grid;
   gap: 22px;
