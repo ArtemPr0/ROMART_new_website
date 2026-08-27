@@ -391,8 +391,23 @@
     });
   }
 
-  /* Forms → mailto stub */
+  /* Forms → server mail endpoint (no mailto / Outlook) */
+  var LEAD_ENDPOINT = "/uploads/send-lead.php";
+
   function handleForm(form) {
+    // Honeypot for bots
+    if (!qs('input[name="website"]', form)) {
+      var hp = document.createElement("input");
+      hp.type = "text";
+      hp.name = "website";
+      hp.tabIndex = -1;
+      hp.autocomplete = "off";
+      hp.setAttribute("aria-hidden", "true");
+      hp.style.cssText =
+        "position:absolute;left:-9999px;height:0;width:0;opacity:0;pointer-events:none;";
+      form.appendChild(hp);
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var data = new FormData(form);
@@ -409,19 +424,33 @@
         alert("Пожалуйста, укажите телефон и email.");
         return;
       }
-      var body = ["Имя: " + name, "Телефон: " + phone];
-      if (email) body.push("Email: " + email);
-      body.push("", "Заявка с сайта romart.ru");
-      body = body.join("\n");
-      var mailto =
-        "mailto:" +
-        CONTACT_EMAIL +
-        "?subject=" +
-        encodeURIComponent("Заявка с сайта ROMART") +
-        "&body=" +
-        encodeURIComponent(body);
-      window.location.href = mailto;
-      form.classList.add("is-success");
+
+      var btn = qs('button[type="submit"]', form);
+      if (btn) btn.disabled = true;
+
+      fetch(LEAD_ENDPOINT, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      })
+        .then(function (res) {
+          return res.json().then(function (json) {
+            return { ok: res.ok && json && json.ok, json: json };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok) throw new Error("send-failed");
+          form.classList.add("is-success");
+        })
+        .catch(function () {
+          alert(
+            "Не удалось отправить заявку. Позвоните +7 (499) 721-00-00 или напишите на " +
+              CONTACT_EMAIL
+          );
+        })
+        .finally(function () {
+          if (btn) btn.disabled = false;
+        });
     });
   }
   qsa("[data-form]").forEach(handleForm);
