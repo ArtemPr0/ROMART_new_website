@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Honeypot — bots fill this; humans never see it
-if (!empty($_POST['website'])) {
+if (!empty($_POST['romart_hp']) || !empty($_POST['website'])) {
     echo json_encode(['ok' => true]);
     exit;
 }
