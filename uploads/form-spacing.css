@@ -1,0 +1,13 @@
+/* Lead form spacing override (deployed to uploads/ because css/ is not writable via FTP) */
+.form-fields {
+  display: grid !important;
+  gap: 20px !important;
+}
+
+.modal .form-fields {
+  gap: 20px !important;
+}
+
+.form--cta .form-fields {
+  gap: 22px !important;
+}
