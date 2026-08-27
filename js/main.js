@@ -394,7 +394,27 @@
   /* Forms → server mail endpoint (no mailto / Outlook) */
   var LEAD_ENDPOINT = "/uploads/send-lead.php";
 
+  function setRussianValidity(input) {
+    function refreshMessage() {
+      if (input.validity.valueMissing) {
+        input.setCustomValidity("Пожалуйста, заполните это поле.");
+      } else if (input.validity.typeMismatch && input.type === "email") {
+        input.setCustomValidity("Пожалуйста, введите корректный email.");
+      } else if (input.validity.patternMismatch) {
+        input.setCustomValidity("Пожалуйста, проверьте формат поля.");
+      } else {
+        input.setCustomValidity("");
+      }
+    }
+    input.addEventListener("invalid", refreshMessage);
+    input.addEventListener("input", function () {
+      input.setCustomValidity("");
+    });
+  }
+
   function handleForm(form) {
+    qsa("input, textarea, select", form).forEach(setRussianValidity);
+
     // Honeypot for bots
     if (!qs('input[name="website"]', form)) {
       var hp = document.createElement("input");
