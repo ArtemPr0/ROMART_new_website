@@ -115,8 +115,8 @@ if ($email !== '') {
 $body .= "IP: {$ip}\n";
 $body .= "Время: {$now}\n";
 
-$fromEmail = (string) ($config['from_email'] ?? 'noreply@romart.ru');
-$fromName = (string) ($config['from_name'] ?? 'ROMART');
+$fromEmail = (string) ($config['from_email'] ?? 'zotova@romart.ru');
+$fromName = (string) ($config['from_name'] ?? 'ROMART сайт');
 $reply = $email !== '' ? $email : $fromEmail;
 
 $channels = [];
@@ -146,23 +146,27 @@ if (!empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($conf
 }
 $channels['smtp'] = $smtpOk ? 'ok' : (!empty($config['smtp_host']) ? 'fail' : 'skipped');
 
-// 3) PHP mail() — not trusted on this host, but try anyway
+// 3) PHP mail() only if SMTP not configured (hosting mail is unreliable)
 $mailOk = false;
-$encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-$headers = [
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    'From: ' . $fromName . ' <' . $fromEmail . '>',
-    'Reply-To: ' . $reply,
-    'Message-ID: <' . $id . '@romart.ru>',
-    'X-Mailer: ROMART-Lead-Form',
-];
-$toHeader = implode(', ', array_filter($recipients));
-if ($toHeader !== '') {
-    $mailOk = (bool) @mail($toHeader, $encodedSubject, $body, implode("\r\n", $headers));
+if (empty($config['smtp_host']) || empty($config['smtp_user']) || empty($config['smtp_pass'])) {
+    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: 8bit',
+        'From: ' . $fromName . ' <' . $fromEmail . '>',
+        'Reply-To: ' . $reply,
+        'Message-ID: <' . $id . '@romart.ru>',
+        'X-Mailer: ROMART-Lead-Form',
+    ];
+    $toHeader = implode(', ', array_filter($recipients));
+    if ($toHeader !== '') {
+        $mailOk = (bool) @mail($toHeader, $encodedSubject, $body, implode("\r\n", $headers));
+    }
+    $channels['mail'] = $mailOk ? 'attempted' : 'fail';
+} else {
+    $channels['mail'] = 'skipped';
 }
-$channels['mail'] = $mailOk ? 'attempted' : 'fail';
 
 if ($logged && $logFile) {
     $statusLine = json_encode([
