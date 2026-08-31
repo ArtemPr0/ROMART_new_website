@@ -2,11 +2,13 @@
 /**
  * Lead form endpoint for romart.ru
  *
- * Delivery order:
+ * Delivery (Russia-safe):
  * 1) Always log to leads.jsonl
- * 2) FormSubmit relay (external SMTP — Reg.ru mail() blackholes)
- * 3) Optional real SMTP if mail-config.php is filled
- * 4) PHP mail() last-resort fallback
+ * 2) Telegram bot notify (if mail-config.php has token + chat_id) — works in RF
+ * 3) Optional SMTP (mail-config.php) — reliable email when Petr provides mailbox password
+ * 4) PHP mail() last resort (often blackholed on this host — not trusted alone)
+ *
+ * FormSubmit was removed: activation links expire / fail to open from Russia.
  */
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -18,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Honeypot — bots fill this; humans never see it
 if (!empty($_POST['romart_hp']) || !empty($_POST['website'])) {
     echo json_encode(['ok' => true, 'skipped' => true]);
     exit;
@@ -88,7 +89,21 @@ foreach ($logCandidates as $candidate) {
     }
 }
 
-$recipients = ['zotova@romart.ru', 'info@romart.info'];
+$config = [];
+$configPath = __DIR__ . '/mail-config.php';
+if (is_readable($configPath)) {
+    $loaded = include $configPath;
+    if (is_array($loaded)) {
+        $config = $loaded;
+    }
+}
+
+// Single inbox per team decision (Марина 31.08)
+$recipients = ['info@romart.info'];
+if (!empty($config['to']) && is_array($config['to']) && count($config['to']) > 0) {
+    $recipients = $config['to'];
+}
+
 $subject = 'Заявка с сайта ROMART — ' . $name . ' — ' . date('d.m.Y H:i:s');
 $body = "Новая заявка с romart.ru\n";
 $body .= "ID: {$id}\n";
@@ -100,105 +115,74 @@ if ($email !== '') {
 $body .= "IP: {$ip}\n";
 $body .= "Время: {$now}\n";
 
-$fromEmail = 'noreply@romart.ru';
-$fromName = 'ROMART';
+$fromEmail = (string) ($config['from_email'] ?? 'noreply@romart.ru');
+$fromName = (string) ($config['from_name'] ?? 'ROMART');
 $reply = $email !== '' ? $email : $fromEmail;
 
-$config = [];
-$configPath = __DIR__ . '/mail-config.php';
-if (is_readable($configPath)) {
-    $loaded = include $configPath;
-    if (is_array($loaded)) {
-        $config = $loaded;
-    }
-}
-if (!empty($config['to']) && is_array($config['to'])) {
-    $recipients = $config['to'];
+$channels = [];
+$delivered = false;
+
+// 1) Telegram — reliable in Russia
+$tg = romart_telegram_send($config, $body);
+$channels['telegram'] = $tg;
+if ($tg === 'ok') {
+    $delivered = true;
 }
 
-$mailed = false;
-$mailVia = 'none';
-$activationNeeded = false;
-$relayDetails = [];
-
-// 1) External FormSubmit relay (bypasses broken hosting mail())
-foreach ($recipients as $to) {
-    $to = trim((string) $to);
-    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
-        continue;
-    }
-    $result = romart_formsubmit_send($to, $name, $phone, $email, $subject, $body, $id);
-    $relayDetails[$to] = $result;
-    if ($result === 'ok') {
-        $mailed = true;
-        $mailVia = 'formsubmit';
-    } elseif ($result === 'needs_activation') {
-        $activationNeeded = true;
-        $mailVia = 'formsubmit-activation';
-    }
-}
-
-// 2) Optional SMTP from mail-config.php
-if (!$mailed && !empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($config['smtp_pass'])) {
+// 2) SMTP if configured
+$smtpOk = false;
+if (!empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($config['smtp_pass'])) {
     foreach ($recipients as $to) {
         $to = trim((string) $to);
-        if ($to === '') {
+        if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
             continue;
         }
         if (romart_smtp_send($config, $to, $subject, $body, $fromEmail, $fromName, $reply)) {
-            $mailed = true;
-            $mailVia = 'smtp';
+            $smtpOk = true;
+            $delivered = true;
             break;
         }
     }
-    if (!$mailed) {
-        $mailVia = 'smtp-failed';
-    }
 }
+$channels['smtp'] = $smtpOk ? 'ok' : (!empty($config['smtp_host']) ? 'fail' : 'skipped');
 
-// 3) PHP mail() last resort (often blackholed on this host)
-if (!$mailed) {
-    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-    $headers = [
-        'MIME-Version: 1.0',
-        'Content-Type: text/plain; charset=UTF-8',
-        'Content-Transfer-Encoding: 8bit',
-        'From: ' . $fromName . ' <' . $fromEmail . '>',
-        'Reply-To: ' . $reply,
-        'Message-ID: <' . $id . '@romart.ru>',
-        'X-Mailer: ROMART-Lead-Form',
-    ];
-    $toHeader = implode(', ', $recipients);
-    $sent = @mail($toHeader, $encodedSubject, $body, implode("\r\n", $headers));
-    if ($sent) {
-        // Hosting often returns true without delivery — do not treat as reliable success
-        $mailVia = 'mail-unreliable';
-    } else {
-        $mailVia = ($mailVia === 'formsubmit-activation') ? 'formsubmit-activation' : 'mail-failed';
-    }
+// 3) PHP mail() — not trusted on this host, but try anyway
+$mailOk = false;
+$encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+$headers = [
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=UTF-8',
+    'Content-Transfer-Encoding: 8bit',
+    'From: ' . $fromName . ' <' . $fromEmail . '>',
+    'Reply-To: ' . $reply,
+    'Message-ID: <' . $id . '@romart.ru>',
+    'X-Mailer: ROMART-Lead-Form',
+];
+$toHeader = implode(', ', array_filter($recipients));
+if ($toHeader !== '') {
+    $mailOk = (bool) @mail($toHeader, $encodedSubject, $body, implode("\r\n", $headers));
 }
+$channels['mail'] = $mailOk ? 'attempted' : 'fail';
 
 if ($logged && $logFile) {
     $statusLine = json_encode([
         'id' => $id,
         'time' => date('c'),
         'event' => 'mail_result',
-        'mailed' => $mailed,
-        'via' => $mailVia,
-        'activation' => $activationNeeded,
-        'relay' => $relayDetails,
+        'delivered' => $delivered,
+        'channels' => $channels,
+        'to' => $recipients,
     ], JSON_UNESCAPED_UNICODE) . "\n";
     @file_put_contents($logFile, $statusLine, FILE_APPEND | LOCK_EX);
 }
 
-// UI success if we logged the lead OR relay accepted / activation email queued
-if ($logged || $mailed || $activationNeeded) {
+// Success if logged (lead captured) OR any reliable channel delivered
+if ($logged || $delivered) {
     echo json_encode([
         'ok' => true,
         'id' => $id,
-        'mailed' => $mailed,
-        'via' => $mailVia,
-        'activation' => $activationNeeded,
+        'delivered' => $delivered,
+        'channels' => $channels,
     ]);
     exit;
 }
@@ -207,71 +191,38 @@ http_response_code(500);
 echo json_encode(['ok' => false, 'error' => 'send']);
 exit;
 
-/**
- * Send via FormSubmit.co (external mail infrastructure).
- * Returns: 'ok' | 'needs_activation' | 'fail'
- */
-function romart_formsubmit_send($toEmail, $name, $phone, $email, $subject, $body, $id)
+function romart_telegram_send(array $config, $text)
 {
-    if (!function_exists('curl_init')) {
-        return 'fail';
+    $token = trim((string) ($config['telegram_bot_token'] ?? ''));
+    $chatId = trim((string) ($config['telegram_chat_id'] ?? ''));
+    if ($token === '' || $chatId === '' || !function_exists('curl_init')) {
+        return 'skipped';
     }
 
+    $url = 'https://api.telegram.org/bot' . rawurlencode($token) . '/sendMessage';
     $payload = [
-        'name' => $name,
-        'email' => $email !== '' ? $email : 'noreply@romart.ru',
-        'phone' => $phone,
-        'message' => $body,
-        'lead_id' => $id,
-        '_subject' => $subject,
-        '_template' => 'table',
-        '_captcha' => 'false',
+        'chat_id' => $chatId,
+        'text' => $text,
+        'disable_web_page_preview' => true,
     ];
-    if ($email !== '') {
-        $payload['_replyto'] = $email;
-    }
-
-    $ch = curl_init('https://formsubmit.co/ajax/' . rawurlencode($toEmail));
+    $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_POST => true,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 25,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            'Accept: application/json',
-            'Origin: https://romart.ru',
-            'Referer: https://romart.ru/',
-        ],
+        CURLOPT_TIMEOUT => 20,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
         CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
     ]);
     $raw = curl_exec($ch);
     $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-
     if ($http < 200 || $http >= 300 || $raw === false) {
         return 'fail';
     }
-
     $json = json_decode((string) $raw, true);
-    if (!is_array($json)) {
-        return 'fail';
-    }
-
-    $success = $json['success'] ?? null;
-    $message = (string) ($json['message'] ?? '');
-
-    if ($success === true || $success === 'true') {
-        return 'ok';
-    }
-    if (stripos($message, 'Activation') !== false || stripos($message, 'Activate Form') !== false) {
-        return 'needs_activation';
-    }
-    return 'fail';
+    return (!empty($json['ok'])) ? 'ok' : 'fail';
 }
 
-/**
- * Minimal SMTP client (LOGIN) for Reg.ru / similar hosting.
- */
 function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $fromName, $replyTo)
 {
     $host = (string) $config['smtp_host'];
@@ -281,11 +232,7 @@ function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $from
     $pass = (string) $config['smtp_pass'];
     $timeout = (int) ($config['smtp_timeout'] ?? 20);
 
-    $remote = $host;
-    if ($secure === 'ssl') {
-        $remote = 'ssl://' . $host;
-    }
-
+    $remote = ($secure === 'ssl') ? ('ssl://' . $host) : $host;
     $fp = @stream_socket_client($remote . ':' . $port, $errno, $errstr, $timeout);
     if (!$fp) {
         return false;
@@ -311,12 +258,10 @@ function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $from
     };
 
     try {
-        $greeting = $read();
-        if (!$ok($greeting, '220')) {
+        if (!$ok($read(), '220')) {
             fclose($fp);
             return false;
         }
-
         $ehloHost = 'romart.ru';
         $resp = $cmd('EHLO ' . $ehloHost);
         if (!$ok($resp, '250')) {
@@ -326,10 +271,8 @@ function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $from
                 return false;
             }
         }
-
         if ($secure === 'tls') {
-            $resp = $cmd('STARTTLS');
-            if (!$ok($resp, '220')) {
+            if (!$ok($cmd('STARTTLS'), '220')) {
                 fclose($fp);
                 return false;
             }
@@ -337,45 +280,35 @@ function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $from
                 fclose($fp);
                 return false;
             }
-            $resp = $cmd('EHLO ' . $ehloHost);
-            if (!$ok($resp, '250')) {
+            if (!$ok($cmd('EHLO ' . $ehloHost), '250')) {
                 fclose($fp);
                 return false;
             }
         }
-
-        $resp = $cmd('AUTH LOGIN');
-        if (!$ok($resp, '334')) {
+        if (!$ok($cmd('AUTH LOGIN'), '334')) {
             fclose($fp);
             return false;
         }
-        $resp = $cmd(base64_encode($user));
-        if (!$ok($resp, '334')) {
+        if (!$ok($cmd(base64_encode($user)), '334')) {
             fclose($fp);
             return false;
         }
-        $resp = $cmd(base64_encode($pass));
-        if (!$ok($resp, '235')) {
+        if (!$ok($cmd(base64_encode($pass)), '235')) {
             fclose($fp);
             return false;
         }
-
-        $resp = $cmd('MAIL FROM:<' . $fromEmail . '>');
-        if (!$ok($resp, '250')) {
+        if (!$ok($cmd('MAIL FROM:<' . $fromEmail . '>'), '250')) {
             fclose($fp);
             return false;
         }
-        $resp = $cmd('RCPT TO:<' . $to . '>');
-        if (!$ok($resp, '250')) {
+        if (!$ok($cmd('RCPT TO:<' . $to . '>'), '250')) {
             fclose($fp);
             return false;
         }
-        $resp = $cmd('DATA');
-        if (!$ok($resp, '354')) {
+        if (!$ok($cmd('DATA'), '354')) {
             fclose($fp);
             return false;
         }
-
         $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
         $encodedFrom = '=?UTF-8?B?' . base64_encode($fromName) . '?= <' . $fromEmail . '>';
         $headers = [
