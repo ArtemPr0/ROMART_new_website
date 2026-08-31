@@ -1,8 +1,12 @@
 <?php
 /**
  * Lead form endpoint for romart.ru
- * - Always appends to leads.jsonl (audit trail)
- * - Sends email via optional SMTP (mail-config.php) or PHP mail()
+ *
+ * Delivery order:
+ * 1) Always log to leads.jsonl
+ * 2) FormSubmit relay (external SMTP — Reg.ru mail() blackholes)
+ * 3) Optional real SMTP if mail-config.php is filled
+ * 4) PHP mail() last-resort fallback
  */
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -84,7 +88,7 @@ foreach ($logCandidates as $candidate) {
     }
 }
 
-$to = 'zotova@romart.ru';
+$recipients = ['zotova@romart.ru', 'info@romart.info'];
 $subject = 'Заявка с сайта ROMART — ' . $name . ' — ' . date('d.m.Y H:i:s');
 $body = "Новая заявка с romart.ru\n";
 $body .= "ID: {$id}\n";
@@ -108,15 +112,51 @@ if (is_readable($configPath)) {
         $config = $loaded;
     }
 }
+if (!empty($config['to']) && is_array($config['to'])) {
+    $recipients = $config['to'];
+}
 
 $mailed = false;
 $mailVia = 'none';
+$activationNeeded = false;
+$relayDetails = [];
 
-if (!empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($config['smtp_pass'])) {
-    $mailed = romart_smtp_send($config, $to, $subject, $body, $fromEmail, $fromName, $reply);
-    $mailVia = $mailed ? 'smtp' : 'smtp-failed';
+// 1) External FormSubmit relay (bypasses broken hosting mail())
+foreach ($recipients as $to) {
+    $to = trim((string) $to);
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        continue;
+    }
+    $result = romart_formsubmit_send($to, $name, $phone, $email, $subject, $body, $id);
+    $relayDetails[$to] = $result;
+    if ($result === 'ok') {
+        $mailed = true;
+        $mailVia = 'formsubmit';
+    } elseif ($result === 'needs_activation') {
+        $activationNeeded = true;
+        $mailVia = 'formsubmit-activation';
+    }
 }
 
+// 2) Optional SMTP from mail-config.php
+if (!$mailed && !empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($config['smtp_pass'])) {
+    foreach ($recipients as $to) {
+        $to = trim((string) $to);
+        if ($to === '') {
+            continue;
+        }
+        if (romart_smtp_send($config, $to, $subject, $body, $fromEmail, $fromName, $reply)) {
+            $mailed = true;
+            $mailVia = 'smtp';
+            break;
+        }
+    }
+    if (!$mailed) {
+        $mailVia = 'smtp-failed';
+    }
+}
+
+// 3) PHP mail() last resort (often blackholed on this host)
 if (!$mailed) {
     $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
     $headers = [
@@ -128,11 +168,16 @@ if (!$mailed) {
         'Message-ID: <' . $id . '@romart.ru>',
         'X-Mailer: ROMART-Lead-Form',
     ];
-    $mailed = @mail($to, $encodedSubject, $body, implode("\r\n", $headers));
-    $mailVia = $mailed ? 'mail' : ($mailVia === 'smtp-failed' ? 'smtp-and-mail-failed' : 'mail-failed');
+    $toHeader = implode(', ', $recipients);
+    $sent = @mail($toHeader, $encodedSubject, $body, implode("\r\n", $headers));
+    if ($sent) {
+        // Hosting often returns true without delivery — do not treat as reliable success
+        $mailVia = 'mail-unreliable';
+    } else {
+        $mailVia = ($mailVia === 'formsubmit-activation') ? 'formsubmit-activation' : 'mail-failed';
+    }
 }
 
-// Persist mail outcome next to the lead (best-effort)
 if ($logged && $logFile) {
     $statusLine = json_encode([
         'id' => $id,
@@ -140,18 +185,21 @@ if ($logged && $logFile) {
         'event' => 'mail_result',
         'mailed' => $mailed,
         'via' => $mailVia,
+        'activation' => $activationNeeded,
+        'relay' => $relayDetails,
     ], JSON_UNESCAPED_UNICODE) . "\n";
     @file_put_contents($logFile, $statusLine, FILE_APPEND | LOCK_EX);
 }
 
-// Lead is "ok" if we stored it; mail may still fail on hosting
-if ($logged) {
-    echo json_encode(['ok' => true, 'id' => $id, 'mailed' => $mailed]);
-    exit;
-}
-
-if ($mailed) {
-    echo json_encode(['ok' => true, 'id' => $id, 'mailed' => true, 'logged' => false]);
+// UI success if we logged the lead OR relay accepted / activation email queued
+if ($logged || $mailed || $activationNeeded) {
+    echo json_encode([
+        'ok' => true,
+        'id' => $id,
+        'mailed' => $mailed,
+        'via' => $mailVia,
+        'activation' => $activationNeeded,
+    ]);
     exit;
 }
 
@@ -160,16 +208,69 @@ echo json_encode(['ok' => false, 'error' => 'send']);
 exit;
 
 /**
+ * Send via FormSubmit.co (external mail infrastructure).
+ * Returns: 'ok' | 'needs_activation' | 'fail'
+ */
+function romart_formsubmit_send($toEmail, $name, $phone, $email, $subject, $body, $id)
+{
+    if (!function_exists('curl_init')) {
+        return 'fail';
+    }
+
+    $payload = [
+        'name' => $name,
+        'email' => $email !== '' ? $email : 'noreply@romart.ru',
+        'phone' => $phone,
+        'message' => $body,
+        'lead_id' => $id,
+        '_subject' => $subject,
+        '_template' => 'table',
+        '_captcha' => 'false',
+    ];
+    if ($email !== '') {
+        $payload['_replyto'] = $email;
+    }
+
+    $ch = curl_init('https://formsubmit.co/ajax/' . rawurlencode($toEmail));
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 25,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Origin: https://romart.ru',
+            'Referer: https://romart.ru/',
+        ],
+        CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+    ]);
+    $raw = curl_exec($ch);
+    $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http < 200 || $http >= 300 || $raw === false) {
+        return 'fail';
+    }
+
+    $json = json_decode((string) $raw, true);
+    if (!is_array($json)) {
+        return 'fail';
+    }
+
+    $success = $json['success'] ?? null;
+    $message = (string) ($json['message'] ?? '');
+
+    if ($success === true || $success === 'true') {
+        return 'ok';
+    }
+    if (stripos($message, 'Activation') !== false || stripos($message, 'Activate Form') !== false) {
+        return 'needs_activation';
+    }
+    return 'fail';
+}
+
+/**
  * Minimal SMTP client (LOGIN) for Reg.ru / similar hosting.
- *
- * mail-config.php example:
- * return [
- *   'smtp_host' => 'mail.hosting.reg.ru',
- *   'smtp_port' => 465,
- *   'smtp_secure' => 'ssl', // ssl | tls | ''
- *   'smtp_user' => 'noreply@romart.ru',
- *   'smtp_pass' => 'SECRET',
- * ];
  */
 function romart_smtp_send(array $config, $to, $subject, $body, $fromEmail, $fromName, $replyTo)
 {

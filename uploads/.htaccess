@@ -9,3 +9,8 @@
     Deny from all
   </FilesMatch>
 </IfModule>
+
+# Remove diagnostic probes if still present
+<FilesMatch "^mail-(probe|relay-probe|relay-probe2)\.php$">
+  Require all denied
+</FilesMatch>
