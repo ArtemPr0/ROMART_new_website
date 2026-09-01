@@ -1858,6 +1858,15 @@ textarea {
   line-height: 1.3;
 }
 
+/* After submit: only thank-you text, no “Оставьте заявку…” title */
+.modal:has(form.is-success) h2 {
+  display: none;
+}
+
+.cta-split__form:has(form.is-success) .cta-split__lead {
+  display: none;
+}
+
 .modal .form input {
   border: 1px solid var(--gray-5);
   background: #fafafa;

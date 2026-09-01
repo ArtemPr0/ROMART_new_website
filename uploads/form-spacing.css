@@ -31,3 +31,12 @@
   color: #fff;
   background: rgba(255, 255, 255, 0.22);
 }
+
+/* After submit: hide form titles, keep only thank-you */
+.modal:has(form.is-success) h2 {
+  display: none !important;
+}
+
+.cta-split__form:has(form.is-success) .cta-split__lead {
+  display: none !important;
+}
