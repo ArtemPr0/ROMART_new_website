@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var CONTACT_EMAIL = "zotova@romart.ru";
+  var CONTACT_EMAIL = "info@romart.info";
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -540,4 +540,82 @@
       cookie.classList.remove("is-visible");
     });
   }
+
+  /* Floating messengers (as on romart.info) */
+  (function initMessengerWidget() {
+    if (qs("[data-messenger-widget]")) return;
+
+    var style = document.createElement("style");
+    style.textContent =
+      ".messenger-widget{position:fixed;right:0;bottom:0;z-index:60;display:flex;flex-direction:column;align-items:flex-end;pointer-events:none}" +
+      ".messenger-widget__menu{display:flex;flex-direction:column;align-items:flex-end;gap:10px;margin:0 12px 12px 0;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,visibility .2s;pointer-events:none}" +
+      ".messenger-widget.is-open .messenger-widget__menu{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}" +
+      ".messenger-widget__link{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:8px 10px 8px 16px;border-radius:999px;background:#fff;color:#1a1a1a;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.14);font:600 14px/1.2 Onest,system-ui,sans-serif;white-space:nowrap}" +
+      ".messenger-widget__link>span:first-child{text-decoration:underline;text-underline-offset:2px}" +
+      ".messenger-widget__link:hover{transform:translateY(-1px)}" +
+      ".messenger-widget__badge{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}" +
+      ".messenger-widget__badge--vk{background:#0077ff}" +
+      ".messenger-widget__badge--tg{background:#2aabee}" +
+      ".messenger-widget__badge--wa{background:#25d366}" +
+      ".messenger-widget__toggle{pointer-events:auto;width:72px;height:72px;border:0;cursor:pointer;background:linear-gradient(180deg,#3d8ec4 0%,#2a6ea0 100%);border-radius:36px 0 0 0;display:grid;place-items:center;box-shadow:0 8px 24px rgba(42,110,160,.35);padding:0}" +
+      ".messenger-widget__toggle:focus-visible{outline:2px solid #fff;outline-offset:2px}" +
+      ".messenger-widget.is-open .messenger-widget__toggle{background:linear-gradient(180deg,#357fae 0%,#245f8a 100%)}" +
+      "@media (max-width:720px){.messenger-widget__toggle{width:64px;height:64px;border-radius:32px 0 0 0}.messenger-widget__link{font-size:13px;padding:7px 8px 7px 12px;gap:10px}.messenger-widget__menu{margin:0 8px 10px 0}}";
+    document.head.appendChild(style);
+
+    var root = document.createElement("div");
+    root.className = "messenger-widget";
+    root.setAttribute("data-messenger-widget", "");
+    root.innerHTML =
+      '<div class="messenger-widget__menu" data-messenger-menu hidden>' +
+      '<a class="messenger-widget__link" href="https://vk.ru/?u=2&to=L3dyaXRlLTk5MzU4NjA2" target="_blank" rel="noopener noreferrer">' +
+      "<span>Написать в ВКонтакте</span>" +
+      '<span class="messenger-widget__badge messenger-widget__badge--vk" aria-hidden="true">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.08 14.27h-1.46c-.55 0-.72-.44-1.71-1.42-.86-.83-1.24-.94-1.45-.94-.3 0-.38.08-.38.49v1.3c0 .35-.11.56-1.03.56-1.52 0-3.2-.92-4.38-2.63-1.78-2.47-2.27-4.33-2.27-4.71 0-.21.08-.4.49-.4h1.46c.37 0 .51.17.65.56.71 2.05 1.9 3.84 2.39 3.84.18 0 .27-.09.27-.55v-2.13c-.06-.98-.57-1.06-.57-1.41 0-.17.14-.34.37-.34h2.3c.31 0 .42.17.42.53v2.87c0 .31.14.42.22.42.18 0 .33-.11.66-.44 1.02-1.14 1.75-2.9 1.75-2.9.1-.21.26-.4.64-.4h1.46c.44 0 .53.23.44.53-.18.86-1.95 3.35-1.95 3.35-.15.25-.21.36 0 .64.15.21.66.64 1 1.03.62.72 1.1 1.32 1.23 1.74.13.41-.07.62-.48.62z"/></svg>' +
+      "</span></a>" +
+      '<a class="messenger-widget__link" href="https://t.me/romart1356_bot" target="_blank" rel="noopener noreferrer">' +
+      "<span>Написать в Telegram</span>" +
+      '<span class="messenger-widget__badge messenger-widget__badge--tg" aria-hidden="true">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M9.78 15.34 9.6 18.1c.26 0 .37-.11.51-.24l2.45-2.35 5.08 3.72c.93.51 1.6.24 1.85-.86L21.8 5.36c.3-1.26-.46-1.76-1.36-1.45L2.9 10.2c-1.22.47-1.2 1.15-.21 1.45l4.53 1.41 10.5-6.62c.5-.3.95-.14.58.19z"/></svg>' +
+      "</span></a>" +
+      '<a class="messenger-widget__link" href="https://wa.me/79265231356" target="_blank" rel="noopener noreferrer">' +
+      "<span>Написать в WhatsApp</span>" +
+      '<span class="messenger-widget__badge messenger-widget__badge--wa" aria-hidden="true">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2c-5.46 0-9.91 4.43-9.91 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.9-4.44 9.9-9.9C21.94 6.43 17.5 2 12.04 2zm5.79 14.07c-.24.68-1.4 1.25-1.94 1.33-.5.07-1.13.1-1.82-.11-.42-.13-.96-.28-1.65-.55-2.9-1.25-4.79-4.18-4.94-4.37-.14-.19-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.45.27-.29.59-.36.79-.36h.57c.18 0 .42-.07.66.5.24.58.82 2 .89 2.14.07.14.12.31.02.5-.1.19-.14.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.56.16.27.73 1.2 1.56 1.94 1.08.96 1.98 1.26 2.26 1.4.28.14.44.12.6-.07.16-.19.7-.81.89-1.09.19-.28.38-.23.64-.14.27.1 1.7.8 1.99.95.29.14.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>' +
+      "</span></a>" +
+      "</div>" +
+      '<button type="button" class="messenger-widget__toggle" data-messenger-toggle aria-expanded="false" aria-label="Написать в мессенджеры">' +
+      '<svg width="36" height="36" viewBox="0 0 48 48" fill="none" aria-hidden="true">' +
+      '<path d="M24 6c-1.2 0-2.2.9-2.4 2.1l-.3 1.6C15.6 11.2 12 16.2 12 22.2v6.3c0 1.3.7 2.5 1.8 3.1l1.7 1v4.2c0 1.3 1.4 2.1 2.6 1.5l4.4-2.3h5c.5 0 1-.1 1.4-.2l4.1 2.1c1.2.6 2.6-.2 2.6-1.5V32.6l1.5-.9c1.1-.6 1.8-1.8 1.8-3.1v-6.3c0-6.1-3.7-11.2-9.4-12.6l-.3-1.5C26.2 6.9 25.2 6 24 6z" fill="#fff"/>' +
+      '<circle cx="18.8" cy="22.5" r="2.2" fill="#2a6ea0"/>' +
+      '<circle cx="29.2" cy="22.5" r="2.2" fill="#2a6ea0"/>' +
+      '<path d="M24 4.5c-.7 0-1.2.5-1.2 1.2V8h2.4V5.7c0-.7-.5-1.2-1.2-1.2z" fill="#fff"/>' +
+      '<circle cx="24" cy="3.8" r="1.5" fill="#fff"/>' +
+      "</svg></button>";
+
+    document.body.appendChild(root);
+
+    var toggle = qs("[data-messenger-toggle]", root);
+    var menu = qs("[data-messenger-menu]", root);
+
+    function setOpen(open) {
+      root.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) menu.removeAttribute("hidden");
+      else menu.setAttribute("hidden", "");
+    }
+
+    toggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setOpen(!root.classList.contains("is-open"));
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!root.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+  })();
 })();
