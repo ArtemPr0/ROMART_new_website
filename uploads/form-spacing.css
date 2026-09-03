@@ -40,3 +40,77 @@
 .cta-split__form:has(form.is-success) .cta-split__lead {
   display: none !important;
 }
+
+/* Legal / cookie / consent (2026-09-04) */
+.cookie-banner {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 80 !important;
+  background: transparent !important;
+  color: #2b2b2b !important;
+  padding: 16px 20px 24px !important;
+  pointer-events: none !important;
+}
+.cookie-banner.is-visible { display: block !important; }
+.cookie-banner__inner {
+  width: min(100%, 920px) !important;
+  margin-inline: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px 28px !important;
+  padding: 18px 22px !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: 0 10px 36px rgba(20, 40, 60, 0.18) !important;
+  pointer-events: auto !important;
+}
+.cookie-banner p {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+  max-width: 720px !important;
+  color: #3a4650 !important;
+}
+.cookie-banner a {
+  color: #2a6ea0 !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+}
+.cookie-banner .btn {
+  flex-shrink: 0 !important;
+  min-width: 140px !important;
+  background: #2a6ea0 !important;
+  background-image: none !important;
+}
+@media (max-width: 720px) {
+  .cookie-banner__inner { flex-direction: column !important; align-items: stretch !important; }
+}
+
+.form-consent {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  cursor: pointer !important;
+}
+.form-consent input[type="checkbox"] {
+  flex: 0 0 auto !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-top: 1px !important;
+  accent-color: #2a6ea0 !important;
+}
+.form-consent a { text-decoration: underline !important; font-weight: 600 !important; }
+.form--cta .form-consent { color: rgba(255,255,255,.95) !important; }
+.form--cta .form-consent a { color: #fff !important; }
+
+.legal-meta { margin: 0 0 16px; color: #6b7a86; font-size: 14px; line-height: 1.5; }
+.legal-table-wrap { overflow-x: auto; margin: 20px 0 28px; }
+.legal-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.legal-table th, .legal-table td { border: 1px solid #d7e0e7; padding: 12px 14px; text-align: left; vertical-align: top; }
+.legal-table th { background: #f3f7fb; color: #2a6ea0; font-weight: 600; }

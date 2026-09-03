@@ -1177,6 +1177,39 @@ textarea {
   text-decoration: underline;
 }
 
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: inherit;
+  opacity: 0.95;
+  cursor: pointer;
+}
+
+.form-consent input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  accent-color: var(--teal);
+}
+
+.form-consent a {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.form--cta .form-consent {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.form--cta .form-consent a {
+  color: #fff;
+}
+
 .form-success {
   display: none;
   padding: 20px;
@@ -1614,11 +1647,12 @@ textarea {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 60;
-  background: rgba(46, 54, 62, 0.96);
-  color: var(--white);
-  padding: 24px;
+  z-index: 80;
+  background: transparent;
+  color: #2b2b2b;
+  padding: 16px 20px 24px;
   display: none;
+  pointer-events: none;
 }
 
 .cookie-banner.is-visible {
@@ -1626,25 +1660,38 @@ textarea {
 }
 
 .cookie-banner__inner {
-  width: min(100% - 40px, var(--content));
+  width: min(100%, 920px);
   margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px 28px;
+  padding: 18px 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 36px rgba(20, 40, 60, 0.18);
+  pointer-events: auto;
 }
 
 .cookie-banner p {
   margin: 0;
   font-size: 14px;
-  line-height: 1.4;
-  max-width: 910px;
+  line-height: 1.45;
+  max-width: 720px;
+  color: #3a4650;
+}
+
+.cookie-banner a {
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .cookie-banner .btn {
   flex-shrink: 0;
-  min-width: 160px;
-  background: var(--rose);
+  min-width: 140px;
+  background: var(--teal);
   background-image: none;
 }
 
@@ -2076,6 +2123,13 @@ textarea {
   padding: 48px 0 80px;
 }
 
+.legal-meta {
+  margin: 0 0 16px;
+  color: #6b7a86;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .legal h1 {
   margin: 0 0 24px;
   color: var(--teal);
@@ -2087,11 +2141,41 @@ textarea {
   font-size: 22px;
 }
 
+.legal h3 {
+  margin: 22px 0 10px;
+  font-size: 18px;
+}
+
 .legal p,
 .legal li {
   font-size: 16px;
   line-height: 1.6;
   color: var(--gray-1);
+}
+
+.legal-table-wrap {
+  overflow-x: auto;
+  margin: 20px 0 28px;
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.legal-table th,
+.legal-table td {
+  border: 1px solid #d7e0e7;
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-table th {
+  background: #f3f7fb;
+  color: var(--teal);
+  font-weight: 600;
 }
 
 .error-page {

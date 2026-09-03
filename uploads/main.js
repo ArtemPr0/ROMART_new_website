@@ -458,6 +458,7 @@
       var name = (data.get("name") || "").toString().trim();
       var email = (data.get("email") || "").toString().trim();
       var phone = (data.get("phone") || "").toString().trim();
+      var consentInput = qs('input[name="pd_consent"]', form);
       var emailInput = qs('input[name="email"]', form);
       var needEmail = emailInput && emailInput.required;
       if (!name || !phone) {
@@ -467,6 +468,15 @@
       if (needEmail && !email) {
         alert("Пожалуйста, укажите телефон и email.");
         return;
+      }
+      if (consentInput && !consentInput.checked) {
+        alert("Пожалуйста, подтвердите согласие на обработку персональных данных.");
+        consentInput.focus();
+        return;
+      }
+      if (consentInput && consentInput.checked) {
+        data.set("pd_consent", "1");
+        data.set("pd_consent_at", new Date().toISOString());
       }
 
       var submitBtn = qs('button[type="submit"]', form);
@@ -549,7 +559,7 @@
   /* Cookie banner */
   var cookie = qs("[data-cookie]");
   var accept = qs("[data-cookie-accept]");
-  var key = "romart_cookie_ok";
+  var key = "romart_cookie_ok_v2";
   try {
     if (cookie && !localStorage.getItem(key)) {
       cookie.classList.add("is-visible");

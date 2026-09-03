@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20260824a">
+  <link rel="stylesheet" href="css/main.css?v=20260904a">
+  <link rel="stylesheet" href="uploads/form-spacing.css?v=20260904a">
 </head>
 <body>
   <header class="site-header is-contrast">
@@ -885,14 +886,17 @@
         <a href="#" data-open-modal="lead">Обратная связь</a>
       </nav>
       <nav class="footer-nav">
-        <a href="polzovatelskoe-soglashenie.html">Пользовательское соглашение</a>
-        <a href="politika-konfidencialnosti.html">Политика конфиденциальности</a>
-      </nav>
+                <a href="polzovatelskoe-soglashenie.html">Пользовательское соглашение</a>
+        <a href="pravila-cookie.html">Правила использования cookies</a>
+        <a href="soglasie-pdn.html">Согласие на обработку персональных данных</a>
+        <a href="politika-konfidencialnosti.html">Политика обработки персональных данных</a>
+        <a href="mailto:info@romart.info">info@romart.info</a>
+</nav>
     </div>
   </footer>
   <div class="cookie-banner" data-cookie role="dialog" aria-label="Cookie">
     <div class="cookie-banner__inner">
-      <p>Продолжая использовать наш сайт, Вы соглашаетесь с использованием cookie-файлов, которые обеспечивают правильную работу сайта.</p>
+      <p>Мы используем cookies. Продолжая использовать сайт, я выражаю согласие на обработку моих пользовательских персональных данных. Подробнее в <a href="pravila-cookie.html">Правилах использования cookies</a> и <a href="politika-konfidencialnosti.html">Политике о порядке обработки и защиты персональных данных</a>.</p>
       <button type="button" class="btn" data-cookie-accept>Принять</button>
     </div>
   </div>
@@ -906,12 +910,15 @@
           <label><span class="visually-hidden">Телефон</span><input type="tel" name="phone" placeholder="Тел.:" required autocomplete="tel"></label>
           <label data-modal-email hidden><span class="visually-hidden">Email</span><input type="email" name="email" placeholder="Email.:" autocomplete="email"></label>
           <button type="submit" class="btn">Отправить заявку</button>
-          <p class="form-note">Нажимая кнопку, я даю <a href="politika-konfidencialnosti.html">согласие на обработку персональных данных</a>.</p>
+          <label class="form-consent">
+            <input type="checkbox" name="pd_consent" value="1" required>
+            <span>Я даю <a href="soglasie-pdn.html" target="_blank" rel="noopener">согласие на обработку персональных данных</a></span>
+          </label>
         </div>
         <div class="form-success">Спасибо! Заявка отправлена. Мы свяжемся с вами.</div>
       </form>
     </div>
   </div>
-  <script src="uploads/main-20260903a.js"></script>
+  <script src="uploads/main-20260904a.js"></script>
 </body>
 </html>

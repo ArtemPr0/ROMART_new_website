@@ -28,11 +28,26 @@ if (!empty($_POST['romart_hp']) || !empty($_POST['website'])) {
 $name = trim((string) ($_POST['name'] ?? ''));
 $phone = trim((string) ($_POST['phone'] ?? ''));
 $email = trim((string) ($_POST['email'] ?? ''));
+$pdConsent = trim((string) ($_POST['pd_consent'] ?? ''));
+$pdConsentAt = trim((string) ($_POST['pd_consent_at'] ?? ''));
 
 if ($name === '' || $phone === '') {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'required']);
     exit;
+}
+
+if ($pdConsent !== '1') {
+    http_response_code(400);
+    echo json_encode(['ok' => false, 'error' => 'consent']);
+    exit;
+}
+
+if ($pdConsentAt === '' || !preg_match('/^\d{4}-\d{2}-\d{2}T/', $pdConsentAt)) {
+    $pdConsentAt = date('c');
+}
+if (mb_strlen($pdConsentAt) > 80) {
+    $pdConsentAt = substr($pdConsentAt, 0, 80);
 }
 
 if (mb_strlen($name) > 200 || mb_strlen($phone) > 80 || mb_strlen($email) > 200) {
@@ -65,6 +80,8 @@ $record = [
     'name' => $name,
     'phone' => $phone,
     'email' => $email,
+    'pd_consent' => true,
+    'pd_consent_at' => $pdConsentAt,
     'ip' => $ip,
     'ua' => substr((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 240),
 ];
@@ -112,8 +129,10 @@ $body .= "Телефон: {$phone}\n";
 if ($email !== '') {
     $body .= "Email: {$email}\n";
 }
+$body .= "Согласие на обработку ПДн: да\n";
+$body .= "Время согласия: {$pdConsentAt}\n";
 $body .= "IP: {$ip}\n";
-$body .= "Время: {$now}\n";
+$body .= "Время заявки: {$now}\n";
 
 $fromEmail = (string) ($config['from_email'] ?? 'zotova@romart.ru');
 $fromName = (string) ($config['from_name'] ?? 'ROMART сайт');
