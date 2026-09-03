@@ -122,14 +122,41 @@ $reply = $email !== '' ? $email : $fromEmail;
 $channels = [];
 $delivered = false;
 
-// 1) Telegram — reliable in Russia
+// 1) Telegram — usually fast / Russia-friendly
 $tg = romart_telegram_send($config, $body);
 $channels['telegram'] = $tg;
 if ($tg === 'ok') {
     $delivered = true;
 }
 
-// 2) SMTP if configured
+// Respond as soon as the lead is captured so mobile clients don't hang on SMTP (~10s+).
+// SMTP / mail continue below after the browser gets ok:true.
+$acceptEarly = $logged || $delivered;
+if ($acceptEarly) {
+    $payload = json_encode([
+        'ok' => true,
+        'id' => $id,
+        'delivered' => $delivered,
+        'channels' => $channels,
+        'pending' => 'smtp',
+    ], JSON_UNESCAPED_UNICODE);
+    header('Connection: close');
+    header('Content-Length: ' . strlen($payload));
+    echo $payload;
+    if (function_exists('fastcgi_finish_request')) {
+        @fastcgi_finish_request();
+    } else {
+        if (function_exists('ob_get_level')) {
+            while (ob_get_level() > 0) {
+                @ob_end_flush();
+            }
+        }
+        @flush();
+    }
+    ignore_user_abort(true);
+}
+
+// 2) SMTP if configured (may be slow — runs after response when possible)
 $smtpOk = false;
 if (!empty($config['smtp_host']) && !empty($config['smtp_user']) && !empty($config['smtp_pass'])) {
     foreach ($recipients as $to) {
@@ -180,14 +207,7 @@ if ($logged && $logFile) {
     @file_put_contents($logFile, $statusLine, FILE_APPEND | LOCK_EX);
 }
 
-// Success if logged (lead captured) OR any reliable channel delivered
-if ($logged || $delivered) {
-    echo json_encode([
-        'ok' => true,
-        'id' => $id,
-        'delivered' => $delivered,
-        'channels' => $channels,
-    ]);
+if ($acceptEarly) {
     exit;
 }
 

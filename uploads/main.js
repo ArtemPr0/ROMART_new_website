@@ -473,15 +473,29 @@
       var btnLabel =
         (submitBtn && submitBtn.getAttribute("data-label")) ||
         (submitBtn ? submitBtn.textContent : "");
+      if (form.getAttribute("data-submitting") === "1") return;
+      form.setAttribute("data-submitting", "1");
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = "Отправка…";
+      }
+
+      var controller =
+        typeof AbortController !== "undefined" ? new AbortController() : null;
+      var timeoutId = null;
+      if (controller) {
+        timeoutId = window.setTimeout(function () {
+          try {
+            controller.abort();
+          } catch (err) {}
+        }, 28000);
       }
 
       fetch(LEAD_ENDPOINT, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
+        signal: controller ? controller.signal : undefined,
       })
         .then(function (res) {
           return res.json().then(
@@ -497,7 +511,6 @@
           if (!result.ok) throw new Error("send-failed");
           form.classList.add("is-success");
           form.scrollIntoView({ block: "nearest", behavior: "smooth" });
-          // Clear success UI so forms can be used again (and pink CTA doesn't stick)
           window.setTimeout(function () {
             var inModal = modal && modal.contains(form);
             if (inModal && modal.classList.contains("is-open")) {
@@ -507,12 +520,24 @@
             }
           }, 3500);
         })
-        .catch(function () {
+        .catch(function (err) {
+          var aborted =
+            err &&
+            (err.name === "AbortError" ||
+              (typeof err.message === "string" &&
+                err.message.toLowerCase().indexOf("abort") !== -1));
           alert(
-            "Не удалось отправить заявку. Позвоните +7 (499) 721-00-00 или напишите на " +
-              CONTACT_EMAIL
+            aborted
+              ? "Связь медленная. Заявка могла уйти — мы проверим. Если в течение минуты не перезвоним: +7 (499) 721-00-00 или " +
+                  CONTACT_EMAIL
+              : "Не удалось отправить заявку. Позвоните +7 (499) 721-00-00 или напишите на " +
+                  CONTACT_EMAIL
           );
-          if (submitBtn) {
+        })
+        .finally(function () {
+          if (timeoutId) window.clearTimeout(timeoutId);
+          form.removeAttribute("data-submitting");
+          if (submitBtn && !form.classList.contains("is-success")) {
             submitBtn.disabled = false;
             submitBtn.textContent = btnLabel;
           }
@@ -568,15 +593,15 @@
     root.setAttribute("data-messenger-widget", "");
     root.innerHTML =
       '<div class="messenger-widget__menu" data-messenger-menu hidden>' +
-      '<a class="messenger-widget__link" href="https://vk.ru/?u=2&to=L3dyaXRlLTk5MzU4NjA2" target="_blank" rel="noopener noreferrer">' +
-      "<span>Написать в ВКонтакте</span>" +
-      '<span class="messenger-widget__badge messenger-widget__badge--vk" aria-hidden="true">' +
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.08 14.27h-1.46c-.55 0-.72-.44-1.71-1.42-.86-.83-1.24-.94-1.45-.94-.3 0-.38.08-.38.49v1.3c0 .35-.11.56-1.03.56-1.52 0-3.2-.92-4.38-2.63-1.78-2.47-2.27-4.33-2.27-4.71 0-.21.08-.4.49-.4h1.46c.37 0 .51.17.65.56.71 2.05 1.9 3.84 2.39 3.84.18 0 .27-.09.27-.55v-2.13c-.06-.98-.57-1.06-.57-1.41 0-.17.14-.34.37-.34h2.3c.31 0 .42.17.42.53v2.87c0 .31.14.42.22.42.18 0 .33-.11.66-.44 1.02-1.14 1.75-2.9 1.75-2.9.1-.21.26-.4.64-.4h1.46c.44 0 .53.23.44.53-.18.86-1.95 3.35-1.95 3.35-.15.25-.21.36 0 .64.15.21.66.64 1 1.03.62.72 1.1 1.32 1.23 1.74.13.41-.07.62-.48.62z"/></svg>' +
-      "</span></a>" +
       '<a class="messenger-widget__link" href="https://t.me/romart1356_bot" target="_blank" rel="noopener noreferrer">' +
       "<span>Написать в Telegram</span>" +
       '<span class="messenger-widget__badge messenger-widget__badge--tg" aria-hidden="true">' +
       '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M9.78 15.34 9.6 18.1c.26 0 .37-.11.51-.24l2.45-2.35 5.08 3.72c.93.51 1.6.24 1.85-.86L21.8 5.36c.3-1.26-.46-1.76-1.36-1.45L2.9 10.2c-1.22.47-1.2 1.15-.21 1.45l4.53 1.41 10.5-6.62c.5-.3.95-.14.58.19z"/></svg>' +
+      "</span></a>" +
+      '<a class="messenger-widget__link" href="https://vk.ru/?u=2&to=L3dyaXRlLTk5MzU4NjA2" target="_blank" rel="noopener noreferrer">' +
+      "<span>Написать в ВКонтакте</span>" +
+      '<span class="messenger-widget__badge messenger-widget__badge--vk" aria-hidden="true">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.08 14.27h-1.46c-.55 0-.72-.44-1.71-1.42-.86-.83-1.24-.94-1.45-.94-.3 0-.38.08-.38.49v1.3c0 .35-.11.56-1.03.56-1.52 0-3.2-.92-4.38-2.63-1.78-2.47-2.27-4.33-2.27-4.71 0-.21.08-.4.49-.4h1.46c.37 0 .51.17.65.56.71 2.05 1.9 3.84 2.39 3.84.18 0 .27-.09.27-.55v-2.13c-.06-.98-.57-1.06-.57-1.41 0-.17.14-.34.37-.34h2.3c.31 0 .42.17.42.53v2.87c0 .31.14.42.22.42.18 0 .33-.11.66-.44 1.02-1.14 1.75-2.9 1.75-2.9.1-.21.26-.4.64-.4h1.46c.44 0 .53.23.44.53-.18.86-1.95 3.35-1.95 3.35-.15.25-.21.36 0 .64.15.21.66.64 1 1.03.62.72 1.1 1.32 1.23 1.74.13.41-.07.62-.48.62z"/></svg>' +
       "</span></a>" +
       '<a class="messenger-widget__link" href="https://wa.me/79265231356" target="_blank" rel="noopener noreferrer">' +
       "<span>Написать в WhatsApp</span>" +
