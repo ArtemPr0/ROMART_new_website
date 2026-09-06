@@ -1634,6 +1634,17 @@ textarea {
   text-align: right;
 }
 
+.footer-nav--docs {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .footer-nav--docs {
+    margin-top: 18px;
+    padding-top: 8px;
+  }
+}
+
 .site-footer img[alt="ROMART"] {
   width: 140px;
   height: auto;

@@ -114,3 +114,14 @@
 .legal-table { width: 100%; border-collapse: collapse; font-size: 15px; }
 .legal-table th, .legal-table td { border: 1px solid #d7e0e7; padding: 12px 14px; text-align: left; vertical-align: top; }
 .legal-table th { background: #f3f7fb; color: #2a6ea0; font-weight: 600; }
+
+/* Footer: space before legal docs (esp. mobile stack) */
+.footer-nav--docs {
+  margin-top: 0;
+}
+@media (max-width: 900px) {
+  .footer-nav--docs {
+    margin-top: 18px !important;
+    padding-top: 8px !important;
+  }
+}
